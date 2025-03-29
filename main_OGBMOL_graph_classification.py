@@ -96,16 +96,42 @@ def train_val_pipeline(MODEL_NAME, dataset, params, net_params, dirs):
         print("[!] -LapPE: Initializing graph positional encoding with Laplacian PE.")
         dataset._add_lap_positional_encodings(net_params['pos_enc_dim'])
         print("[!] Time taken: ", time.time()-tt)
+    
     elif net_params['pe_init'] == 'rand_walk':
         tt = time.time()
         print("[!] -LSPE: Initializing graph positional encoding with rand walk features.")
         dataset._init_positional_encodings(net_params['pos_enc_dim'], net_params['pe_init'])
         print("[!] Time taken: ", time.time()-tt)
-        
+    
         tt = time.time()
         print("[!] -LSPE (For viz later): Adding lapeigvecs to key 'eigvec' for every graph.")
         dataset._add_eig_vecs(net_params['pos_enc_dim'])
         print("[!] Time taken: ", time.time()-tt)
+    
+    elif net_params['pe_init'] == 'anchor':
+        tt = time.time()
+        print("[!] -AnchorPE: Initializing graph positional encoding using anchor distance features.")
+        dataset._init_positional_encodings(net_params['pos_enc_dim'], net_params['pe_init'])  # uses anchor_positional_encoding internally
+        print("[!] Time taken: ", time.time()-tt)
+
+        tt = time.time()
+        print("[!] -AnchorPE (For viz later): Adding lapeigvecs to key 'eigvec' for every graph.")
+        dataset._add_eig_vecs(net_params['pos_enc_dim'])  # optional, for visualization
+        print("[!] Time taken: ", time.time()-tt)
+        
+    elif net_params['pe_init'] == 'spe':
+        tt = time.time()
+        print("[!] -SPE: Initializing graph positional encoding using structure-preserving embeddings (SPE).")
+        dataset._init_positional_encodings(net_params['pos_enc_dim'], net_params['pe_init'])  # uses spe_positional_encoding internally
+        print("[!] Time taken: ", time.time()-tt)
+
+        tt = time.time()
+        print("[!] -SPE (For viz later): Adding lapeigvecs to key 'eigvec' for every graph.")
+        dataset._add_eig_vecs(net_params['pos_enc_dim'])  # optional, for visualization
+        print("[!] Time taken: ", time.time()-tt)
+
+
+    
         
     if MODEL_NAME in ['SAN', 'GraphiT']:
         if net_params['full_graph']:
@@ -481,14 +507,8 @@ def main():
 
     
     
-    
-    
-    
-    
-    
-main()
-
-
+if __name__ == "__main__":
+    main()
 
 
 

@@ -1,21 +1,13 @@
+#!/bin/bash
 
-
-# Command to download dataset:
-#   bash script_download_ZINC.sh
-
-
-DIR=molecules/
+DIR=data/molecules/
+mkdir -p $DIR
 cd $DIR
-
 
 FILE=ZINC.pkl
 if test -f "$FILE"; then
-	echo -e "$FILE already downloaded."
+    echo -e "$FILE already downloaded."
 else
-	echo -e "\ndownloading $FILE..."
-	curl https://data.dgl.ai/dataset/benchmarking-gnns/ZINC.pkl -o ZINC.pkl -J -L -k
+    echo -e "\nDownloading $FILE..."
+    curl -L -o ZINC.pkl https://data.dgl.ai/dataset/benchmarking-gnns/ZINC.pkl
 fi
-
-
-
-

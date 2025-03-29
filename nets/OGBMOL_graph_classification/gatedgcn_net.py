@@ -40,13 +40,13 @@ class GatedGCNNet(nn.Module):
         
         self.pos_enc_dim = net_params['pos_enc_dim']
         
-        if self.pe_init in ['rand_walk', 'lap_pe']:
+        if self.pe_init in ['rand_walk', 'lap_pe', 'anchor', 'spe']:
             self.embedding_p = nn.Linear(self.pos_enc_dim, hidden_dim)
         
         self.atom_encoder = AtomEncoder(hidden_dim)
         self.bond_encoder = BondEncoder(hidden_dim)
         
-        if self.pe_init == 'rand_walk':
+        if self.pe_init in ['rand_walk', 'anchor', 'spe']:
             # LSPE
             self.layers = nn.ModuleList([ GatedGCNLSPELayer(hidden_dim, hidden_dim, dropout, self.batch_norm, self.residual) 
                     for _ in range(n_layers-1) ]) 
@@ -59,7 +59,7 @@ class GatedGCNNet(nn.Module):
         
         self.MLP_layer = MLPReadout(out_dim, n_classes)
 
-        if self.pe_init == 'rand_walk':
+        if self.pe_init in ['rand_walk', 'anchor', 'spe']:
             self.p_out = nn.Linear(out_dim, self.pos_enc_dim)
             self.Whp = nn.Linear(out_dim+self.pos_enc_dim, out_dim)
         
@@ -70,7 +70,7 @@ class GatedGCNNet(nn.Module):
         h = self.atom_encoder(h)
         e = self.bond_encoder(e)
 
-        if self.pe_init in ['rand_walk', 'lap_pe']:
+        if self.pe_init in ['rand_walk', 'anchor', 'spe', 'lap_pe']:
             p = self.embedding_p(p)
             
         if self.pe_init == 'lap_pe':
@@ -82,7 +82,7 @@ class GatedGCNNet(nn.Module):
             
         g.ndata['h'] = h
         
-        if self.pe_init == 'rand_walk':
+        if self.pe_init in ['rand_walk', 'anchor', 'spe']:
             p = self.p_out(p)
             g.ndata['p'] = p
             
@@ -101,7 +101,7 @@ class GatedGCNNet(nn.Module):
             p = p / batch_wise_p_l2_norms
             g.ndata['p'] = p
         
-        if self.pe_init == 'rand_walk':
+        if self.pe_init in ['rand_walk', 'anchor', 'spe']:
             # Concat h and p
             hp = self.Whp(torch.cat((g.ndata['h'],g.ndata['p']),dim=-1))
             g.ndata['h'] = hp
