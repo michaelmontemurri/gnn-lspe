@@ -1,3 +1,5 @@
+import math
+
 import torch
 import torch.nn.functional as F
 import pickle
@@ -170,7 +172,7 @@ def lap_positional_encoding(g, pos_enc_dim):
     
     return g
 
-def de_gpr_positional_encoding(g, pos_enc_dim, alpha = 0.2, num_anchors = 8):
+def de_gpr_positional_encoding(g, pos_enc_dim, alpha = 0.2):
     """
         Distance Encoding: Generalized Page Rank
         Calculates Zeta_gpr
@@ -185,8 +187,9 @@ def de_gpr_positional_encoding(g, pos_enc_dim, alpha = 0.2, num_anchors = 8):
     n = g.number_of_nodes()
 
     # Random sample the nodes to get an anchor set, ensuring it is smaller than n
-    anchors = np.random.choice(n, size=min(num_anchors, n), replace=False)
-    features = np.zeros((n, len(anchors)))
+    num_anchors = min(pos_enc_dim, n)
+    anchors = np.random.choice(n, size=num_anchors, replace=False)
+    features = np.zeros((n, pos_enc_dim))
 
     # Calculate Gamma
     gamma = [(1 - alpha) * (alpha ** k) for k in range(pos_enc_dim)]
@@ -364,6 +367,7 @@ class MoleculeDataset(torch.utils.data.Dataset):
         self.train.graph_lists = [de_gpr_positional_encoding(g, pos_enc_dim) for g in self.train.graph_lists]
         self.val.graph_lists = [de_gpr_positional_encoding(g, pos_enc_dim) for g in self.val.graph_lists]
         self.test.graph_lists = [de_gpr_positional_encoding(g, pos_enc_dim) for g in self.test.graph_lists]
+
         
     def _make_full_graph(self, adaptive_weighting=None):
         self.train.graph_lists = [make_full_graph(g, adaptive_weighting) for g in self.train.graph_lists]

@@ -37,8 +37,8 @@ class GatedGCNNet(nn.Module):
         self.alpha_loss = net_params['alpha_loss']
         
         self.pos_enc_dim = net_params['pos_enc_dim']
-        
-        if self.pe_init in ['rand_walk', 'lap_pe']:
+
+        if self.pe_init in ['rand_walk', 'lap_pe', 'de_gpr']:
             self.embedding_p = nn.Linear(self.pos_enc_dim, hidden_dim)
 
         self.embedding_h = nn.Embedding(num_atom_type, hidden_dim)
@@ -75,11 +75,11 @@ class GatedGCNNet(nn.Module):
         # input embedding
         h = self.embedding_h(h)
         h = self.in_feat_dropout(h)
-        
-        if self.pe_init in ['rand_walk', 'lap_pe']:
-            p = self.embedding_p(p) 
-            
-        if self.pe_init == 'lap_pe':
+
+        if self.pe_init in ['rand_walk', 'lap_pe', 'de_gpr']:
+            p = self.embedding_p(p)
+
+        if self.pe_init in ['lap_pe', 'de_gpr']:
             h = h + p
             p = None
         
