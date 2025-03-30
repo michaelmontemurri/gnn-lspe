@@ -1,0 +1,13 @@
+Lmod has detected the following error: The following module(s) are unknown:
+"cuda/12.1"
+
+Please check the spelling or version number. Also try "module spider ..."
+It is also possible your cache file is out-of-date; it may help to try:
+  $ module --ignore_cache load "cuda/12.1"
+
+Also make sure that all modulefiles written in TCL start with the string
+#%Module
+
+
+
+slurmstepd: error: *** JOB 54861845 ON bg11601 CANCELLED AT 2025-03-30T13:52:52 ***

@@ -1,0 +1,36 @@
+Lmod has detected the following error: The following module(s) are unknown:
+"cuda/12.1"
+
+Please check the spelling or version number. Also try "module spider ..."
+It is also possible your cache file is out-of-date; it may help to try:
+  $ module --ignore_cache load "cuda/12.1"
+
+Also make sure that all modulefiles written in TCL start with the string
+#%Module
+
+
+
+cuda available with GPU: Tesla V100-SXM2-16GB
+[I] Loading dataset OGBG-MOLTOX21...
+[I] Finished loading.
+[I] Data load time: 6.9078s
+MODEL DETAILS:
+
+MODEL/Total parameters: GatedGCN 1063939
+[!] -LSPE: Initializing graph positional encoding with rand walk features.
+[!] Time taken:  29.447118759155273
+[!] -LSPE (For viz later): Adding lapeigvecs to key 'eigvec' for every graph.
+Traceback (most recent call last):
+  File "/home/mikemont/final_project/gnn-lspe/main_OGBMOL_graph_classification.py", line 511, in <module>
+    main()
+  File "/home/mikemont/final_project/gnn-lspe/main_OGBMOL_graph_classification.py", line 506, in main
+    train_val_pipeline(MODEL_NAME, dataset, params, net_params, dirs)
+  File "/home/mikemont/final_project/gnn-lspe/main_OGBMOL_graph_classification.py", line 108, in train_val_pipeline
+    dataset._add_eig_vecs(net_params['pos_enc_dim'])
+  File "/home/mikemont/final_project/gnn-lspe/data/ogb_mol.py", line 210, in _add_eig_vecs
+    self.train = [(add_eig_vec(g, pos_enc_dim), label) for g, label in self.train]
+  File "/home/mikemont/final_project/gnn-lspe/data/ogb_mol.py", line 210, in <listcomp>
+    self.train = [(add_eig_vec(g, pos_enc_dim), label) for g, label in self.train]
+  File "/home/mikemont/final_project/gnn-lspe/data/ogb_mol.py", line 57, in add_eig_vec
+    A = g.adjacency_matrix_scipy(return_edge_ids=False).astype(float)
+AttributeError: 'DGLGraph' object has no attribute 'adjacency_matrix_scipy'. Did you mean: 'adjacency_matrix'?

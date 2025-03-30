@@ -1,0 +1,30 @@
+Lmod has detected the following error: The following module(s) are unknown:
+"cuda/12.1"
+
+Please check the spelling or version number. Also try "module spider ..."
+It is also possible your cache file is out-of-date; it may help to try:
+  $ module --ignore_cache load "cuda/12.1"
+
+Also make sure that all modulefiles written in TCL start with the string
+#%Module
+
+
+
+/home/mikemont/final_project/gnn-lspe/gnn_lspe_env/lib/python3.10/site-packages/cvxpy/problems/problem.py:1403: UserWarning: Solution may be inaccurate. Try another solver, adjusting the solver settings, or solve with verbose=True for more information.
+  warnings.warn(
+/home/mikemont/final_project/gnn-lspe/data/positional_encodings.py:263: UserWarning: [WARN] SPE failed on graph with 21 nodes. Using degree-based fallback. Error: 
+  warnings.warn(f"[WARN] SPE failed on graph with {n_nodes} nodes. Using degree-based fallback. Error: {e}")
+/home/mikemont/final_project/gnn-lspe/data/positional_encodings.py:263: UserWarning: [WARN] SPE failed on graph with 35 nodes. Using degree-based fallback. Error: 
+  warnings.warn(f"[WARN] SPE failed on graph with {n_nodes} nodes. Using degree-based fallback. Error: {e}")
+/home/mikemont/final_project/gnn-lspe/data/positional_encodings.py:263: UserWarning: [WARN] SPE failed on graph with 28 nodes. Using degree-based fallback. Error: 
+  warnings.warn(f"[WARN] SPE failed on graph with {n_nodes} nodes. Using degree-based fallback. Error: {e}")
+/home/mikemont/final_project/gnn-lspe/data/positional_encodings.py:263: UserWarning: [WARN] SPE failed on graph with 24 nodes. Using degree-based fallback. Error: 
+  warnings.warn(f"[WARN] SPE failed on graph with {n_nodes} nodes. Using degree-based fallback. Error: {e}")
+/home/mikemont/final_project/gnn-lspe/data/positional_encodings.py:263: UserWarning: [WARN] SPE failed on graph with 29 nodes. Using degree-based fallback. Error: 
+  warnings.warn(f"[WARN] SPE failed on graph with {n_nodes} nodes. Using degree-based fallback. Error: {e}")
+/home/mikemont/final_project/gnn-lspe/data/positional_encodings.py:263: UserWarning: [WARN] SPE failed on graph with 22 nodes. Using degree-based fallback. Error: 
+  warnings.warn(f"[WARN] SPE failed on graph with {n_nodes} nodes. Using degree-based fallback. Error: {e}")
+/home/mikemont/final_project/gnn-lspe/data/positional_encodings.py:263: UserWarning: [WARN] SPE failed on graph with 9 nodes. Using degree-based fallback. Error: 
+  warnings.warn(f"[WARN] SPE failed on graph with {n_nodes} nodes. Using degree-based fallback. Error: {e}")
+/home/mikemont/final_project/gnn-lspe/data/positional_encodings.py:263: UserWarning: [WARN] SPE failed on graph with 6 nodes. Using degree-based fallback. Error: 
+  warnings.warn(f"[WARN] SPE failed on graph with {n_nodes} nodes. Using degree-based fallback. Error: {e}")

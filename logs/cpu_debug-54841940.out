@@ -1,0 +1,24 @@
+cuda not available
+[I] Loading dataset OGBG-MOLTOX21...
+[I] Finished loading.
+[I] Data load time: 2.8041s
+MODEL DETAILS:
+
+MODEL/Total parameters: GatedGCN 1063939
+[!] -LSPE: Initializing graph positional encoding with rand walk features.
+Traceback (most recent call last):
+  File "/home/mikemont/final_project/gnn-lspe/main_OGBMOL_graph_classification.py", line 511, in <module>
+    main()
+  File "/home/mikemont/final_project/gnn-lspe/main_OGBMOL_graph_classification.py", line 506, in main
+    train_val_pipeline(MODEL_NAME, dataset, params, net_params, dirs)
+  File "/home/mikemont/final_project/gnn-lspe/main_OGBMOL_graph_classification.py", line 103, in train_val_pipeline
+    dataset._init_positional_encodings(net_params['pos_enc_dim'], net_params['pe_init'])
+  File "/home/mikemont/final_project/gnn-lspe/data/ogb_mol.py", line 218, in _init_positional_encodings
+    self.train = [(init_positional_encoding(g, pos_enc_dim, type_init), label) for g, label in self.train]
+  File "/home/mikemont/final_project/gnn-lspe/data/ogb_mol.py", line 218, in <listcomp>
+    self.train = [(init_positional_encoding(g, pos_enc_dim, type_init), label) for g, label in self.train]
+  File "/home/mikemont/final_project/gnn-lspe/data/ogb_mol.py", line 79, in init_positional_encoding
+    return random_walk_positional_encoding(g, pos_enc_dim)
+  File "/home/mikemont/final_project/gnn-lspe/data/positional_encodings.py", line 397, in random_walk_positional_encoding
+    A = nx.to_scipy_sparse_matrix(G_nx, format='csr').astype(float)
+AttributeError: module 'networkx' has no attribute 'to_scipy_sparse_matrix'

@@ -1,0 +1,27 @@
+Lmod has detected the following error: The following module(s) are unknown:
+"cuda/12.1"
+
+Please check the spelling or version number. Also try "module spider ..."
+It is also possible your cache file is out-of-date; it may help to try:
+  $ module --ignore_cache load "cuda/12.1"
+
+Also make sure that all modulefiles written in TCL start with the string
+#%Module
+
+
+
+cuda available with GPU: Tesla V100-SXM2-16GB
+[I] Loading dataset OGBG-MOLTOX21...
+[I] Finished loading.
+[I] Data load time: 6.4221s
+MODEL DETAILS:
+
+MODEL/Total parameters: PNA 5357533
+[!] -LSPE: Initializing graph positional encoding with rand walk features.
+[!] Time taken:  29.347288370132446
+[!] -LSPE (For viz later): Adding lapeigvecs to key 'eigvec' for every graph.
+[!] Time taken:  18.145458936691284
+Training Graphs:  6015
+Validation Graphs:  782
+Test Graphs:  782
+  0%|          | 0/1000 [00:00<?, ?it/s]Epoch 0:   0%|          | 0/1000 [00:00<?, ?it/s]Epoch 0:   0%|          | 0/1000 [00:11<?, ?it/s, lr=0.0005, test_AUC=0.499, time=11.8, train_AUC=0.538, train_loss=0.495, val_AUC=0.507, val_loss=0.43]Epoch 0:   0%|          | 1/1000 [00:11<3:17:28, 11.86s/it, lr=0.0005, test_AUC=0.499, time=11.8, train_AUC=0.538, train_loss=0.495, val_AUC=0.507, val_loss=0.43]Epoch 1:   0%|          | 1/1000 [00:11<3:17:28, 11.86s/it, lr=0.0005, test_AUC=0.499, time=11.8, train_AUC=0.538, train_loss=0.495, val_AUC=0.507, val_loss=0.43]Epoch 1:   0%|          | 1/1000 [00:18<3:17:28, 11.86s/it, lr=0.0005, test_AUC=0.617, time=6.54, train_AUC=0.651, train_loss=0.27, val_AUC=0.632, val_loss=0.31] Epoch 1:   0%|          | 2/1000 [00:18<2:25:42,  8.76s/it, lr=0.0005, test_AUC=0.617, time=6.54, train_AUC=0.651, train_loss=0.27, val_AUC=0.632, val_loss=0.31]Epoch 2:   0%|          | 2/1000 [00:18<2:25:42,  8.76s/it, lr=0.0005, test_AUC=0.617, time=6.54, train_AUC=0.651, train_loss=0.27, val_AUC=0.632, val_loss=0.31]Epoch 2:   0%|          | 2/1000 [00:25<2:25:42,  8.76s/it, lr=0.0005, test_AUC=0.648, time=6.78, train_AUC=0.667, train_loss=0.252, val_AUC=0.676, val_loss=0.312]Epoch 2:   0%|          | 3/1000 [00:25<2:11:00,  7.88s/it, lr=0.0005, test_AUC=0.648, time=6.78, train_AUC=0.667, train_loss=0.252, val_AUC=0.676, val_loss=0.312]Epoch 3:   0%|          | 3/1000 [00:25<2:11:00,  7.88s/it, lr=0.0005, test_AUC=0.648, time=6.78, train_AUC=0.667, train_loss=0.252, val_AUC=0.676, val_loss=0.312]Epoch 3:   0%|          | 3/1000 [00:31<2:11:00,  7.88s/it, lr=0.0005, test_AUC=0.696, time=6.5, train_AUC=0.689, train_loss=0.241, val_AUC=0.718, val_loss=0.286] Epoch 3:   0%|          | 4/1000 [00:31<2:02:10,  7.36s/it, lr=0.0005, test_AUC=0.696, time=6.5, train_AUC=0.689, train_loss=0.241, val_AUC=0.718, val_loss=0.286]Epoch 4:   0%|          | 4/1000 [00:31<2:02:10,  7.36s/it, lr=0.0005, test_AUC=0.696, time=6.5, train_AUC=0.689, train_loss=0.241, val_AUC=0.718, val_loss=0.286]Epoch 4:   0%|          | 4/1000 [00:38<2:02:10,  7.36s/it, lr=0.0005, test_AUC=0.693, time=6.78, train_AUC=0.703, train_loss=0.236, val_AUC=0.727, val_loss=0.285]Epoch 4:   0%|          | 5/1000 [00:38<1:58:55,  7.17s/it, lr=0.0005, test_AUC=0.693, time=6.78, train_AUC=0.703, train_loss=0.236, val_AUC=0.727, val_loss=0.285]Epoch 5:   0%|          | 5/1000 [00:38<1:58:55,  7.17s/it, lr=0.0005, test_AUC=0.693, time=6.78, train_AUC=0.703, train_loss=0.236, val_AUC=0.727, val_loss=0.285]Epoch 5:   0%|          | 5/1000 [00:45<1:58:55,  7.17s/it, lr=0.0005, test_AUC=0.7, time=6.49, train_AUC=0.722, train_loss=0.231, val_AUC=0.742, val_loss=0.265]  Epoch 5:   1%|          | 6/1000 [00:45<1:55:18,  6.96s/it, lr=0.0005, test_AUC=0.7, time=6.49, train_AUC=0.722, train_loss=0.231, val_AUC=0.742, val_loss=0.265]Epoch 6:   1%|          | 6/1000 [00:45<1:55:18,  6.96s/it, lr=0.0005, test_AUC=0.7, time=6.49, train_AUC=0.722, train_loss=0.231, val_AUC=0.742, val_loss=0.265]Epoch 6:   1%|          | 6/1000 [00:52<1:55:18,  6.96s/it, lr=0.0005, test_AUC=0.694, time=6.84, train_AUC=0.73, train_loss=0.228, val_AUC=0.735, val_loss=0.256]Epoch 6:   1%|          | 7/1000 [00:52<1:54:54,  6.94s/it, lr=0.0005, test_AUC=0.694, time=6.84, train_AUC=0.73, train_loss=0.228, val_AUC=0.735, val_loss=0.256]Epoch 7:   1%|          | 7/1000 [00:52<1:54:54,  6.94s/it, lr=0.0005, test_AUC=0.694, time=6.84, train_AUC=0.73, train_loss=0.228, val_AUC=0.735, val_loss=0.256]Epoch 7:   1%|          | 7/1000 [00:58<1:54:54,  6.94s/it, lr=0.0005, test_AUC=0.704, time=6.81, train_AUC=0.741, train_loss=0.223, val_AUC=0.741, val_loss=0.287]Epoch 7:   1%|          | 8/1000 [00:59<1:54:24,  6.92s/it, lr=0.0005, test_AUC=0.704, time=6.81, train_AUC=0.741, train_loss=0.223, val_AUC=0.741, val_loss=0.287]Epoch 8:   1%|          | 8/1000 [00:59<1:54:24,  6.92s/it, lr=0.0005, test_AUC=0.704, time=6.81, train_AUC=0.741, train_loss=0.223, val_AUC=0.741, val_loss=0.287]slurmstepd: error: *** JOB 54848553 ON bg11909 CANCELLED AT 2025-03-29T17:53:09 ***

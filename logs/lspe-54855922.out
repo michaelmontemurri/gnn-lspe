@@ -1,0 +1,38 @@
+Lmod has detected the following error: The following module(s) are unknown:
+"cuda/12.1"
+
+Please check the spelling or version number. Also try "module spider ..."
+It is also possible your cache file is out-of-date; it may help to try:
+  $ module --ignore_cache load "cuda/12.1"
+
+Also make sure that all modulefiles written in TCL start with the string
+#%Module
+
+
+
+cuda available with GPU: Tesla V100-SXM2-16GB
+[I] Loading dataset OGBG-MOLTOX21...
+[I] Finished loading.
+[I] Data load time: 6.4153s
+MODEL DETAILS:
+
+MODEL/Total parameters: GraphiT 1051852
+[!] -LSPE: Initializing graph positional encoding with rand walk features.
+[!] Time taken:  30.090710639953613
+[!] -LSPE (For viz later): Adding lapeigvecs to key 'eigvec' for every graph.
+[!] Time taken:  4.76837158203125e-06
+[!] Adding full graph connectivity..
+Traceback (most recent call last):
+  File "/home/mikemont/final_project/gnn-lspe/main_OGBMOL_graph_classification.py", line 509, in <module>
+    main()
+  File "/home/mikemont/final_project/gnn-lspe/main_OGBMOL_graph_classification.py", line 504, in main
+    train_val_pipeline(MODEL_NAME, dataset, params, net_params, dirs)
+  File "/home/mikemont/final_project/gnn-lspe/main_OGBMOL_graph_classification.py", line 138, in train_val_pipeline
+    dataset._make_full_graph() if MODEL_NAME == 'SAN' else dataset._make_full_graph((net_params['p_steps'], net_params['gamma']))
+  File "/home/mikemont/final_project/gnn-lspe/data/ogb_mol.py", line 248, in _make_full_graph
+    self.train = [make_full_graph(graph, adaptive_weighting) for graph in self.train]
+  File "/home/mikemont/final_project/gnn-lspe/data/ogb_mol.py", line 248, in <listcomp>
+    self.train = [make_full_graph(graph, adaptive_weighting) for graph in self.train]
+  File "/home/mikemont/final_project/gnn-lspe/data/ogb_mol.py", line 146, in make_full_graph
+    A = dgl.to_scipy(g, scipy_fmt="csr")
+AttributeError: module 'dgl' has no attribute 'to_scipy'. Did you mean: 'from_scipy'?

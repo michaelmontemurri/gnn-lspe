@@ -1,0 +1,18 @@
+Lmod has detected the following error: The following module(s) are unknown:
+"cuda/12.1"
+
+Please check the spelling or version number. Also try "module spider ..."
+It is also possible your cache file is out-of-date; it may help to try:
+  $ module --ignore_cache load "cuda/12.1"
+
+Also make sure that all modulefiles written in TCL start with the string
+#%Module
+
+
+
+Traceback (most recent call last):
+  File "/home/mikemont/final_project/gnn-lspe/main_OGBMOL_graph_classification.py", line 509, in <module>
+    main()
+  File "/home/mikemont/final_project/gnn-lspe/main_OGBMOL_graph_classification.py", line 376, in main
+    with open(args.config) as f:
+FileNotFoundError: [Errno 2] No such file or directory: 'configs/SAN_MOLTOX21_LSPE_anchor.json'

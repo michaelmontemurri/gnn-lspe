@@ -53,21 +53,29 @@ def add_eig_vec(g, pos_enc_dim):
      but stores value in a diff key 'eigvec'
     """
 
-    # Laplacian
-    A = g.adjacency_matrix_scipy(return_edge_ids=False).astype(float)
-    N = sp.diags(dgl.backend.asnumpy(g.in_degrees()).clip(1) ** -0.5, dtype=float)
-    L = sp.eye(g.number_of_nodes()) - N * A * N
+    G_nx = g.to_networkx().to_undirected()
+    A = nx.to_scipy_sparse_array(G_nx, format='csr').astype(float)
 
-    # Eigenvectors with numpy
-    EigVal, EigVec = np.linalg.eig(L.toarray())
-    idx = EigVal.argsort() # increasing order
-    EigVal, EigVec = EigVal[idx], np.real(EigVec[:,idx])
-    g.ndata['eigvec'] = torch.from_numpy(EigVec[:,1:pos_enc_dim+1]).float() 
+    # normalized Laplacian
+    degs = np.array(A.sum(axis=1)).flatten()
+    degs = np.clip(degs, 1, None)  # Avoid division by zero
+    D_inv_sqrt = sp.diags(degs ** -0.5)
+    L = sp.eye(A.shape[0]) - D_inv_sqrt @ A @ D_inv_sqrt
 
-    # zero padding to the end if n < pos_enc_dim
-    n = g.number_of_nodes()
-    if n <= pos_enc_dim:
-        g.ndata['eigvec'] = F.pad(g.ndata['eigvec'], (0, pos_enc_dim - n + 1), value=float('0'))
+    # Eigen-decomposition
+    EigVal, EigVec = np.linalg.eigh(L.toarray())  
+    idx = EigVal.argsort()  # increasing order
+    EigVec = np.real(EigVec[:, idx])
+
+    # Take first non-trivial eigenvectors
+    eigvec_torch = torch.from_numpy(EigVec[:, 1:pos_enc_dim+1]).float()
+    g.ndata['eigvec'] = eigvec_torch
+
+    # Zero-padding if number of nodes < pos_enc_dim
+    n, d = eigvec_torch.shape
+    if d < pos_enc_dim:
+        pad_width = pos_enc_dim - d
+        g.ndata['eigvec'] = F.pad(g.ndata['eigvec'], (0, pad_width), value=0.0)
 
     return g
 
@@ -95,32 +103,50 @@ def make_full_graph(graph, adaptive_weighting=None):
     # Copy over the node feature data and laplace  eigvecs
     full_g.ndata['feat'] = g.ndata['feat']
     
-    try:
+    if 'pos_enc' in g.ndata:
         full_g.ndata['pos_enc'] = g.ndata['pos_enc']
-    except:
-        pass
-    
-    try:
+    if 'eigvec' in g.ndata:
         full_g.ndata['eigvec'] = g.ndata['eigvec']
-    except:
-        pass
 
     # Initalize fake edge features w/ 0s
     full_g.edata['feat'] = torch.zeros(full_g.number_of_edges(), 3, dtype=torch.long)
     full_g.edata['real'] = torch.zeros(full_g.number_of_edges(), dtype=torch.long)
 
     # Copy real edge data over, and identify real edges!
-    full_g.edges[g.edges(form='uv')[0].tolist(), g.edges(form='uv')[1].tolist()].data['feat'] = g.edata['feat']
-    full_g.edges[g.edges(form='uv')[0].tolist(), g.edges(form='uv')[1].tolist()].data['real'] = torch.ones(
-        g.edata['feat'].shape[0], dtype=torch.long)  # This indicates real edges
+    # Get edge endpoints
+    u, v = g.edges()
+    num_skipped = 0
+    num_total = u.shape[0]
+
+    for i in range(num_total):
+        try:
+            eid = full_g.edge_ids(u[i], v[i])
+            full_g.edata['feat'][eid] = g.edata['feat'][i]
+            full_g.edata['real'][eid] = 1
+        except:
+            try:
+                # Try reversed order (important for undirected)
+                eid = full_g.edge_ids(v[i], u[i])
+                full_g.edata['feat'][eid] = g.edata['feat'][i]
+                full_g.edata['real'][eid] = 1
+            except:
+                print(f"[Warning] Failed to match edge ({u[i].item()}, {v[i].item()}) in complete graph")
+                num_skipped += 1
+                continue
+
+    if num_skipped > 0:
+        print(f"[Info] Skipped {num_skipped}/{num_total} edges for graph with {g.number_of_nodes()} nodes")
+
 
     # This code section only apply for GraphiT --------------------------------------------
     if adaptive_weighting is not None:
         p_steps, gamma = adaptive_weighting
     
         n = g.number_of_nodes()
-        A = g.adjacency_matrix(scipy_fmt="csr")
-        
+        G_nx = g.to_networkx().to_undirected()
+        A = nx.to_scipy_sparse_array(G_nx, format='csr').astype(float)
+
+
         # Adaptive weighting k_ij for each edge
         if p_steps == "qtr_num_nodes":
             p_steps = int(0.25*n)
@@ -162,7 +188,8 @@ class OGBMOLDataset(Dataset):
         print("[I] Loading dataset %s..." % (name))
         self.name = name.lower()
         
-        self.dataset = DglGraphPropPredDataset(name=self.name)
+        self.dataset = DglGraphPropPredDataset(name=self.name, root='dataset')
+
         
         if features == 'full':
             pass 

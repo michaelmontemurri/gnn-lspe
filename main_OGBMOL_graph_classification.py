@@ -105,7 +105,7 @@ def train_val_pipeline(MODEL_NAME, dataset, params, net_params, dirs):
     
         tt = time.time()
         print("[!] -LSPE (For viz later): Adding lapeigvecs to key 'eigvec' for every graph.")
-        dataset._add_eig_vecs(net_params['pos_enc_dim'])
+        # dataset._add_eig_vecs(net_params['pos_enc_dim'])
         print("[!] Time taken: ", time.time()-tt)
     
     elif net_params['pe_init'] == 'anchor':
@@ -131,8 +131,6 @@ def train_val_pipeline(MODEL_NAME, dataset, params, net_params, dirs):
         print("[!] Time taken: ", time.time()-tt)
 
 
-    
-        
     if MODEL_NAME in ['SAN', 'GraphiT']:
         if net_params['full_graph']:
             st = time.time()
@@ -280,28 +278,28 @@ def train_val_pipeline(MODEL_NAME, dataset, params, net_params, dirs):
     print("TOTAL TIME TAKEN: {:.4f}s".format(time.time()-t0))
     print("AVG TIME PER EPOCH: {:.4f}s".format(np.mean(per_epoch_time)))
     
-    if net_params['pe_init'] == 'rand_walk' and g_outs_test is not None:
-        # Visualize actual and predicted/learned eigenvecs
-        from utils.plot_util import plot_graph_eigvec
-        if not os.path.exists(viz_dir):
-            os.makedirs(viz_dir)
+    # if net_params['pe_init'] == 'rand_walk' and g_outs_test is not None:
+    #     # Visualize actual and predicted/learned eigenvecs
+    #     from utils.plot_util import plot_graph_eigvec
+    #     if not os.path.exists(viz_dir):
+    #         os.makedirs(viz_dir)
 
-        sample_graph_ids = [153,103,123]
+    #     sample_graph_ids = [153,103,123]
 
-        for f_idx, graph_id in enumerate(sample_graph_ids):
+    #     for f_idx, graph_id in enumerate(sample_graph_ids):
 
-            # Test graphs
-            g_dgl = g_outs_test[graph_id]
+    #         # Test graphs
+    #         g_dgl = g_outs_test[graph_id]
 
-            f = plt.figure(f_idx, figsize=(12,6))
+    #         f = plt.figure(f_idx, figsize=(12,6))
 
-            plt1 = f.add_subplot(121)
-            plot_graph_eigvec(plt1, graph_id, g_dgl, feature_key='eigvec', actual_eigvecs=True)
+    #         plt1 = f.add_subplot(121)
+    #         plot_graph_eigvec(plt1, graph_id, g_dgl, feature_key='eigvec', actual_eigvecs=True)
 
-            plt2 = f.add_subplot(122)
-            plot_graph_eigvec(plt2, graph_id, g_dgl, feature_key='p', predicted_eigvecs=True)
+    #         plt2 = f.add_subplot(122)
+    #         plot_graph_eigvec(plt2, graph_id, g_dgl, feature_key='p', predicted_eigvecs=True)
 
-            f.savefig(viz_dir+'/test'+str(graph_id)+'.jpg')    
+    #         f.savefig(viz_dir+'/test'+str(graph_id)+'.jpg')    
 
     writer.close()
 
@@ -476,18 +474,18 @@ def main():
     if args.pe_init is not None:
         net_params['pe_init'] = args.pe_init    
     
-            
     
     # OGBMOL*
     num_classes = dataset.dataset.num_tasks  # provided by OGB dataset class
     net_params['n_classes'] = num_classes
 
     if MODEL_NAME == 'PNA':
-        D = torch.cat([torch.sparse.sum(g.adjacency_matrix(transpose=True), dim=-1).to_dense() for g, label in
-                   dataset.train])
-        net_params['avg_d'] = dict(lin=torch.mean(D),
-                                   exp=torch.mean(torch.exp(torch.div(1, D)) - 1),
-                                   log=torch.mean(torch.log(D + 1)))
+        D = torch.cat([g.in_degrees().float() for g, _ in dataset.train])
+        net_params['avg_d'] = dict(
+            lin=torch.mean(D),
+            exp=torch.mean(torch.exp(1. / (D + 1e-5)) - 1),
+            log=torch.mean(torch.log(D + 1))
+        )
     
     root_log_dir = out_dir + 'logs/' + MODEL_NAME + "_" + DATASET_NAME + "_GPU" + str(config['gpu']['id']) + "_" + time.strftime('%Hh%Mm%Ss_on_%b_%d_%Y')
     root_ckpt_dir = out_dir + 'checkpoints/' + MODEL_NAME + "_" + DATASET_NAME + "_GPU" + str(config['gpu']['id']) + "_" + time.strftime('%Hh%Mm%Ss_on_%b_%d_%Y')

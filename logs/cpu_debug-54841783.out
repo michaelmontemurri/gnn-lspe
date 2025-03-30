@@ -1,0 +1,31 @@
+cuda not available
+[I] Loading dataset OGBG-MOLTOX21...
+Loading necessary files...
+This might take a while.
+Processing graphs...
+  0%|          | 0/7831 [00:00<?, ?it/s]100%|██████████| 7831/7831 [00:00<00:00, 79628.39it/s]
+Converting graphs into DGL objects...
+  0%|          | 0/7831 [00:00<?, ?it/s]  0%|          | 1/7831 [00:00<34:15,  3.81it/s]  4%|▍         | 328/7831 [00:00<00:06, 1154.34it/s]  9%|▊         | 677/7831 [00:00<00:03, 1936.14it/s] 12%|█▏        | 941/7831 [00:00<00:04, 1518.23it/s] 16%|█▋        | 1288/7831 [00:00<00:03, 1995.79it/s] 21%|██        | 1632/7831 [00:00<00:02, 2368.74it/s] 25%|██▌       | 1971/7831 [00:00<00:02, 2643.14it/s] 29%|██▉       | 2307/7831 [00:01<00:01, 2840.72it/s] 34%|███▍      | 2648/7831 [00:01<00:01, 3001.63it/s] 38%|███▊      | 2992/7831 [00:01<00:01, 3126.94it/s] 43%|████▎     | 3336/7831 [00:01<00:01, 3216.83it/s] 47%|████▋     | 3670/7831 [00:01<00:01, 2372.06it/s] 51%|█████     | 4012/7831 [00:01<00:01, 2616.36it/s] 56%|█████▌    | 4354/7831 [00:01<00:01, 2817.29it/s] 60%|██████    | 4699/7831 [00:01<00:01, 2983.77it/s] 64%|██████▍   | 5042/7831 [00:02<00:00, 3104.24it/s] 69%|██████▊   | 5370/7831 [00:02<00:00, 3105.39it/s] 73%|███████▎  | 5711/7831 [00:02<00:00, 3189.70it/s] 77%|███████▋  | 6050/7831 [00:02<00:00, 3245.23it/s] 82%|████████▏ | 6391/7831 [00:02<00:00, 3292.20it/s] 86%|████████▌ | 6733/7831 [00:02<00:00, 3327.39it/s] 90%|█████████ | 7073/7831 [00:02<00:00, 3346.18it/s] 95%|█████████▍| 7410/7831 [00:02<00:00, 2343.19it/s] 99%|█████████▉| 7750/7831 [00:02<00:00, 2583.45it/s]100%|██████████| 7831/7831 [00:02<00:00, 2610.38it/s]
+Saving...
+[I] Finished loading.
+[I] Data load time: 7.8218s
+MODEL DETAILS:
+
+MODEL/Total parameters: GatedGCN 1063939
+[!] -LSPE: Initializing graph positional encoding with rand walk features.
+Traceback (most recent call last):
+  File "/home/mikemont/final_project/gnn-lspe/main_OGBMOL_graph_classification.py", line 511, in <module>
+    main()
+  File "/home/mikemont/final_project/gnn-lspe/main_OGBMOL_graph_classification.py", line 506, in main
+    train_val_pipeline(MODEL_NAME, dataset, params, net_params, dirs)
+  File "/home/mikemont/final_project/gnn-lspe/main_OGBMOL_graph_classification.py", line 103, in train_val_pipeline
+    dataset._init_positional_encodings(net_params['pos_enc_dim'], net_params['pe_init'])
+  File "/home/mikemont/final_project/gnn-lspe/data/ogb_mol.py", line 218, in _init_positional_encodings
+    self.train = [(init_positional_encoding(g, pos_enc_dim, type_init), label) for g, label in self.train]
+  File "/home/mikemont/final_project/gnn-lspe/data/ogb_mol.py", line 218, in <listcomp>
+    self.train = [(init_positional_encoding(g, pos_enc_dim, type_init), label) for g, label in self.train]
+  File "/home/mikemont/final_project/gnn-lspe/data/ogb_mol.py", line 79, in init_positional_encoding
+    return random_walk_positional_encoding(g, pos_enc_dim)
+  File "/home/mikemont/final_project/gnn-lspe/data/positional_encodings.py", line 393, in random_walk_positional_encoding
+    A = g.adjacency_matrix_scipy(return_edge_ids=False).astype(float)
+AttributeError: 'DGLGraph' object has no attribute 'adjacency_matrix_scipy'. Did you mean: 'adjacency_matrix'?

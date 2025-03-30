@@ -7,7 +7,7 @@
     "model": "GatedGCN",
     "dataset": "OGBG-MOLPCBA",
     
-    "out_dir": "out/GatedGCN_MOLPCBA_LSPE_noLapEigLoss/",
+    "out_dir": "out/GatedGCN_MOLPCBA_LSPE_anchor_noLapEigLoss/",
     
     "params": {
         "seed": 41,
@@ -33,7 +33,7 @@
         "dropout": 0.1,
         "batch_norm": true,
         "pos_enc_dim": 20,
-        "pe_init": "rand_walk",
+        "pe_init": "anchor",
         "use_lapeig_loss": false,
         "alpha_loss": 1e-3,
         "lambda_loss": 100
