@@ -157,9 +157,9 @@ def train_val_pipeline(MODEL_NAME, dataset, params, net_params, dirs):
     # import train functions for all GNNs
     from train.train_OGBMOL_graph_classification import train_epoch_sparse as train_epoch, evaluate_network_sparse as evaluate_network
 
-    train_loader = DataLoader(trainset, num_workers=4, batch_size=params['batch_size'], shuffle=True, collate_fn=dataset.collate, pin_memory=True)
-    val_loader = DataLoader(valset, num_workers=4, batch_size=params['batch_size'], shuffle=False, collate_fn=dataset.collate, pin_memory=True)
-    test_loader = DataLoader(testset, num_workers=4, batch_size=params['batch_size'], shuffle=False, collate_fn=dataset.collate, pin_memory=True)
+    train_loader = DataLoader(trainset, num_workers=0, batch_size=params['batch_size'], shuffle=True, collate_fn=dataset.collate, pin_memory=True)
+    val_loader = DataLoader(valset, num_workers=0, batch_size=params['batch_size'], shuffle=False, collate_fn=dataset.collate, pin_memory=True)
+    test_loader = DataLoader(testset, num_workers=0, batch_size=params['batch_size'], shuffle=False, collate_fn=dataset.collate, pin_memory=True)
     
     # At any point you can hit Ctrl + C to break out of training early.
     try:

@@ -112,8 +112,11 @@ def train_val_pipeline(MODEL_NAME, dataset, params, net_params, dirs):
         print("[!] -LSPE (For viz later): Adding lapeigvecs to key 'eigvec' for every graph.")
         dataset._add_eig_vecs(net_params['pos_enc_dim'])
         print("[!] Time taken: ", time.time()-tt)
-    elif net_params['pe_init'] == 'dist_enc':
-        raise NotImplementedError("This positional encoding has not been implemented yet")
+    elif net_params['pe_init'] == 'de_gpr':
+        tt = time.time()
+        print("[!] -LSPE: Initializing graph positional encoding with generalized page rank features.")
+        dataset._init_positional_encodings_gpr(net_params['pos_enc_dim'])
+        print("[!] Time taken: ", time.time() - tt)
         
     if MODEL_NAME in ['SAN', 'GraphiT']:
         if net_params['full_graph']:

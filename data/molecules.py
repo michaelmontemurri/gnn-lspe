@@ -3,6 +3,7 @@ import torch.nn.functional as F
 import pickle
 import torch.utils.data
 import time
+import random
 import os
 import numpy as np
 
@@ -169,6 +170,43 @@ def lap_positional_encoding(g, pos_enc_dim):
     
     return g
 
+def de_gpr_positional_encoding(g, pos_enc_dim, alpha = 0.2, num_anchors = 8):
+    """
+        Distance Encoding: Generalized Page Rank
+        Calculates Zeta_gpr
+    """
+
+    # Random walk matrix W = AD^{-1}
+    A = g.adjacency_matrix(scipy_fmt="csr")
+    degs = g.in_degrees().clamp(min=1).numpy() # Skip disconnected nodes
+    D_inv = sp.diags(1.0 / degs)
+    W = A @ D_inv
+
+    n = g.number_of_nodes()
+
+    # Random sample the nodes to get an anchor set, ensuring it is smaller than n
+    anchors = np.random.choice(n, size=min(num_anchors, n), replace=False)
+    features = np.zeros((n, len(anchors)))
+
+    # Calculate Gamma
+    gamma = [(1 - alpha) * (alpha ** k) for k in range(pos_enc_dim)]
+
+    # Compute generalized page rank scores
+    for i, v in enumerate(anchors):
+        # For each anchor in the anchor set:
+        x = np.zeros((n, ))
+        x[v] = 1.0 # One-hot vector for starting point of simulated random walk
+
+        gpr_vec = np.zeros((n, ))
+        pow_W = x.copy()
+        for k in range(pos_enc_dim):
+            gpr_vec += gamma[k] * pow_W
+            pow_W = W @ pow_W
+
+        features[:, i] = gpr_vec
+
+    g.ndata['pos_enc'] = torch.tensor(features, dtype = torch.float)
+    return g
 
 def init_positional_encoding(g, pos_enc_dim, type_init):
     """
@@ -320,6 +358,12 @@ class MoleculeDataset(torch.utils.data.Dataset):
         self.train.graph_lists = [init_positional_encoding(g, pos_enc_dim, type_init) for g in self.train.graph_lists]
         self.val.graph_lists = [init_positional_encoding(g, pos_enc_dim, type_init) for g in self.val.graph_lists]
         self.test.graph_lists = [init_positional_encoding(g, pos_enc_dim, type_init) for g in self.test.graph_lists]
+
+    def _init_positional_encodings_gpr(self, pos_enc_dim):
+        # Initializing positional encoding with GPR
+        self.train.graph_lists = [de_gpr_positional_encoding(g, pos_enc_dim) for g in self.train.graph_lists]
+        self.val.graph_lists = [de_gpr_positional_encoding(g, pos_enc_dim) for g in self.val.graph_lists]
+        self.test.graph_lists = [de_gpr_positional_encoding(g, pos_enc_dim) for g in self.test.graph_lists]
         
     def _make_full_graph(self, adaptive_weighting=None):
         self.train.graph_lists = [make_full_graph(g, adaptive_weighting) for g in self.train.graph_lists]
