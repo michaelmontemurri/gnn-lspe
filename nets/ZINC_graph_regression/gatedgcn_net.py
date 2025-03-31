@@ -50,7 +50,7 @@ class GatedGCNNet(nn.Module):
         
         self.in_feat_dropout = nn.Dropout(in_feat_dropout)
         
-        if self.pe_init == 'rand_walk':
+        if self.pe_init in ['rand_walk', 'de_gpr']:
             # LSPE
             self.layers = nn.ModuleList([ GatedGCNLSPELayer(hidden_dim, hidden_dim, dropout,
                                                         self.batch_norm, residual=self.residual) for _ in range(self.n_layers-1) ]) 
@@ -63,7 +63,7 @@ class GatedGCNNet(nn.Module):
         
         self.MLP_layer = MLPReadout(out_dim, 1)   # 1 out dim since regression problem        
 
-        if self.pe_init == 'rand_walk':
+        if self.pe_init in ['rand_walk', 'de_gpr']:
             self.p_out = nn.Linear(out_dim, self.pos_enc_dim)
             self.Whp = nn.Linear(out_dim+self.pos_enc_dim, out_dim)
         
@@ -79,7 +79,7 @@ class GatedGCNNet(nn.Module):
         if self.pe_init in ['rand_walk', 'lap_pe', 'de_gpr']:
             p = self.embedding_p(p)
 
-        if self.pe_init in ['lap_pe', 'de_gpr']:
+        if self.pe_init in ['lap_pe']:
             h = h + p
             p = None
         
@@ -94,7 +94,7 @@ class GatedGCNNet(nn.Module):
             
         g.ndata['h'] = h
         
-        if self.pe_init == 'rand_walk':
+        if self.pe_init in ['rand_walk', 'de_gpr']:
             # Implementing p_g = p_g - torch.mean(p_g, dim=0)
             p = self.p_out(p)
             g.ndata['p'] = p
