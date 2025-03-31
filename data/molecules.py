@@ -187,6 +187,7 @@ def de_gpr_positional_encoding(g, pos_enc_dim, alpha = 0.2):
     n = g.number_of_nodes()
 
     # Random sample the nodes to get an anchor set, ensuring it is smaller than n
+    np.random.seed(41)
     num_anchors = min(pos_enc_dim, n)
     anchors = np.random.choice(n, size=num_anchors, replace=False)
     features = np.zeros((n, pos_enc_dim))

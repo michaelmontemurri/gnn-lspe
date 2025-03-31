@@ -49,56 +49,55 @@ class GraphiTNet(nn.Module):
         self.alpha_loss = net_params['alpha_loss']
         
         self.pos_enc_dim = net_params['pos_enc_dim']
-        
-        if self.pe_init in ['rand_walk']:
+
+        if self.pe_init in ['rand_walk', 'de_gpr']:
             self.embedding_p = nn.Linear(self.pos_enc_dim, GT_hidden_dim)
         
         self.embedding_h = nn.Embedding(num_atom_type, GT_hidden_dim)
         self.embedding_e = nn.Embedding(num_bond_type, GT_hidden_dim)
-        
-        if self.pe_init == 'rand_walk':
+
+        if self.pe_init in ['rand_walk', 'de_gpr']:
             # LSPE
             self.layers = nn.ModuleList([ GraphiT_GT_LSPE_Layer(gamma, GT_hidden_dim, GT_hidden_dim, GT_n_heads, full_graph, dropout,
                                                                 self.layer_norm, self.batch_norm, self.residual, self.adaptive_edge_PE) for _ in range(GT_layers-1) ])
             self.layers.append(GraphiT_GT_LSPE_Layer(gamma, GT_hidden_dim, GT_out_dim, GT_n_heads, full_graph, dropout,
                                                      self.layer_norm, self.batch_norm, self.residual, self.adaptive_edge_PE))
-        else: 
+        else:
             # NoPE
             self.layers = nn.ModuleList([ GraphiT_GT_Layer(gamma, GT_hidden_dim, GT_hidden_dim, GT_n_heads, full_graph, dropout,
                                                            self.layer_norm, self.batch_norm, self.residual, self.adaptive_edge_PE) for _ in range(GT_layers-1) ])
             self.layers.append(GraphiT_GT_Layer(gamma, GT_hidden_dim, GT_out_dim, GT_n_heads, full_graph, dropout,
                                                 self.layer_norm, self.batch_norm, self.residual, self.adaptive_edge_PE))
-        
-        self.MLP_layer = MLPReadout(GT_out_dim, 1)   # 1 out dim since regression problem        
-        
-        if self.pe_init == 'rand_walk':
+
+        self.MLP_layer = MLPReadout(GT_out_dim, 1)   # 1 out dim since regression problem
+
+        if self.pe_init in ['rand_walk', 'de_gpr']:
             self.p_out = nn.Linear(GT_out_dim, self.pos_enc_dim)
             self.Whp = nn.Linear(GT_out_dim+self.pos_enc_dim, GT_out_dim)
-        
+
         self.g = None              # For util; To be accessed in loss() function
-        
-        
+
     def forward(self, g, h, p, e, snorm_n):
-        
+
         # input embedding
         h = self.embedding_h(h)
-        e = self.embedding_e(e)  
-        
+        e = self.embedding_e(e)
+
         h = self.in_feat_dropout(h)
-        
-        if self.pe_init in ['rand_walk']:
-            p = self.embedding_p(p) 
-        
+
+        if self.pe_init in ['rand_walk', 'de_gpr']:
+            p = self.embedding_p(p)
+
         # GNN
         for conv in self.layers:
             h, p = conv(g, h, p, e, snorm_n)
         g.ndata['h'] = h
-        
-        if self.pe_init == 'rand_walk':
+
+        if self.pe_init in ['rand_walk', 'de_gpr']:
             p = self.p_out(p)
             g.ndata['p'] = p
-        
-        if self.use_lapeig_loss and self.pe_init == 'rand_walk':
+
+        if self.use_lapeig_loss and self.pe_init in ['rand_walk', 'de_gpr']:
             # Implementing p_g = p_g - torch.mean(p_g, dim=0)
             means = dgl.mean_nodes(g, 'p')
             batch_wise_p_means = means.repeat_interleave(g.batch_num_nodes(), 0)
@@ -108,16 +107,16 @@ class GraphiTNet(nn.Module):
             g.ndata['p'] = p
             g.ndata['p2'] = g.ndata['p']**2
             norms = dgl.sum_nodes(g, 'p2')
-            norms = torch.sqrt(norms+1e-6)            
+            norms = torch.sqrt(norms+1e-6)
             batch_wise_p_l2_norms = norms.repeat_interleave(g.batch_num_nodes(), 0)
             p = p / batch_wise_p_l2_norms
             g.ndata['p'] = p
-        
-        if self.pe_init == 'rand_walk':
+
+        if self.pe_init in ['rand_walk', 'de_gpr']:
             # Concat h and p
             hp = self.Whp(torch.cat((g.ndata['h'],g.ndata['p']),dim=-1))
             g.ndata['h'] = hp
-        
+
         # readout
         if self.readout == "sum":
             hg = dgl.sum_nodes(g, 'h')
@@ -127,19 +126,19 @@ class GraphiTNet(nn.Module):
             hg = dgl.mean_nodes(g, 'h')
         else:
             hg = dgl.mean_nodes(g, 'h')  # default readout is mean nodes
-            
+
         self.g = g # For util; To be accessed in loss() function
-        
+
         return self.MLP_layer(hg), g
-        
+
     def loss(self, scores, targets):
 
         # Loss A: Task loss -------------------------------------------------------------
         loss_a = nn.L1Loss()(scores, targets)
-        
+
         if self.use_lapeig_loss:
             raise NotImplementedError
         else:
             loss = loss_a
-        
+
         return loss
