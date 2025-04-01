@@ -54,13 +54,13 @@ class SANNet(nn.Module):
         
         self.pos_enc_dim = net_params['pos_enc_dim']
         
-        if self.pe_init in ['rand_walk']:
+        if self.pe_init in ['rand_walk', 'degree']:
             self.embedding_p = nn.Linear(self.pos_enc_dim, GT_hidden_dim)
         
         self.embedding_h = AtomEncoder(GT_hidden_dim)
         self.embedding_e = BondEncoder(GT_hidden_dim)
         
-        if self.pe_init == 'rand_walk':
+        if self.pe_init in ['rand_walk', 'degree']:
             # LSPE
             self.layers = nn.ModuleList([ SAN_GT_LSPE_Layer(self.gamma, GT_hidden_dim, GT_hidden_dim, GT_n_heads, full_graph,
                                                                 dropout, self.layer_norm, self.batch_norm, self.residual) for _ in range(GT_layers-1) ])
@@ -75,7 +75,7 @@ class SANNet(nn.Module):
         
         self.MLP_layer = MLPReadout(GT_out_dim, n_classes)   
  
-        if self.pe_init == 'rand_walk':
+        if self.pe_init in ['rand_walk', 'degree']:
             self.p_out = nn.Linear(GT_out_dim, self.pos_enc_dim)
             self.Whp = nn.Linear(GT_out_dim+self.pos_enc_dim, GT_out_dim)
         
@@ -86,7 +86,7 @@ class SANNet(nn.Module):
         h = self.embedding_h(h)
         e = self.embedding_e(e)
 
-        if self.pe_init in ['rand_walk']:
+        if self.pe_init in ['rand_walk', 'degree']:
             p = self.embedding_p(p)
         
         for conv in self.layers:
@@ -94,7 +94,7 @@ class SANNet(nn.Module):
             
         g.ndata['h'] = h
         
-        if self.pe_init == 'rand_walk':
+        if self.pe_init in ['rand_walk', 'degree']:
             p = self.p_out(p)
             g.ndata['p'] = p
             # Implementing p_g = p_g - torch.mean(p_g, dim=0)
