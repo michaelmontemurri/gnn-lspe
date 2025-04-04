@@ -1,0 +1,103 @@
+cuda not available
+[I] Loading dataset OGBG-MOLTOX21...
+[I] Finished loading.
+[I] Data load time: 1.0990s
+MODEL DETAILS:
+
+MODEL/Total parameters: GatedGCN 1063939
+[!] -closeness: Initializing graph positional encoding using closeness centrality.
+[!] Time taken:  13.050674438476562
+[!] -closeness (For viz later): Adding lapeigvecs to key 'eigvec' for every graph.
+[!] Time taken:  10.784099817276001
+Training Graphs:  6015
+Validation Graphs:  782
+Test Graphs:  782
+Epoch   156: reducing learning rate of group 0 to 5.0000e-04.
+Epoch   182: reducing learning rate of group 0 to 2.5000e-04.
+Epoch   208: reducing learning rate of group 0 to 1.2500e-04.
+Epoch   234: reducing learning rate of group 0 to 6.2500e-05.
+Epoch   260: reducing learning rate of group 0 to 3.1250e-05.
+Epoch   286: reducing learning rate of group 0 to 1.5625e-05.
+Epoch   312: reducing learning rate of group 0 to 7.8125e-06.
+
+!! LR EQUAL TO MIN LR SET.
+Test AUC: 0.7813
+Train AUC: 0.8987
+Val AUC: 0.8218
+Convergence Time (Epochs): 311.0000
+TOTAL TIME TAKEN: 6187.0429s
+AVG TIME PER EPOCH: 19.6631s
+cuda not available
+[I] Loading dataset OGBG-MOLTOX21...
+[I] Finished loading.
+[I] Data load time: 1.1206s
+MODEL DETAILS:
+
+MODEL/Total parameters: PNA 5357533
+[!] -closeness: Initializing graph positional encoding using closeness centrality.
+[!] Time taken:  12.887969970703125
+[!] -closeness (For viz later): Adding lapeigvecs to key 'eigvec' for every graph.
+[!] Time taken:  10.691351890563965
+Training Graphs:  6015
+Validation Graphs:  782
+Test Graphs:  782
+Epoch    47: reducing learning rate of group 0 to 4.0000e-04.
+Epoch    65: reducing learning rate of group 0 to 3.2000e-04.
+Epoch    85: reducing learning rate of group 0 to 2.5600e-04.
+Epoch    96: reducing learning rate of group 0 to 2.0480e-04.
+Epoch   107: reducing learning rate of group 0 to 1.6384e-04.
+Epoch   118: reducing learning rate of group 0 to 1.3107e-04.
+Epoch   129: reducing learning rate of group 0 to 1.0486e-04.
+Epoch   140: reducing learning rate of group 0 to 8.3886e-05.
+Epoch   151: reducing learning rate of group 0 to 6.7109e-05.
+Epoch   162: reducing learning rate of group 0 to 5.3687e-05.
+Epoch   173: reducing learning rate of group 0 to 4.2950e-05.
+Epoch   184: reducing learning rate of group 0 to 3.4360e-05.
+Epoch   195: reducing learning rate of group 0 to 2.7488e-05.
+Epoch   206: reducing learning rate of group 0 to 2.1990e-05.
+Epoch   217: reducing learning rate of group 0 to 1.7592e-05.
+
+!! LR EQUAL TO MIN LR SET.
+Test AUC: 0.7685
+Train AUC: 0.8938
+Val AUC: 0.8094
+Convergence Time (Epochs): 216.0000
+TOTAL TIME TAKEN: 9661.4998s
+AVG TIME PER EPOCH: 44.1252s
+cuda not available
+[I] Loading dataset OGBG-MOLTOX21...
+[I] Finished loading.
+[I] Data load time: 1.1812s
+MODEL DETAILS:
+
+MODEL/Total parameters: PNA 5357533
+[!] -betweenness: Initializing graph positional encoding using betweenness centrality.
+[!] Time taken:  14.925185680389404
+[!] -betweenness (For viz later): Adding lapeigvecs to key 'eigvec' for every graph.
+[!] Time taken:  10.820051193237305
+Training Graphs:  6015
+Validation Graphs:  782
+Test Graphs:  782
+Epoch    67: reducing learning rate of group 0 to 4.0000e-04.
+Epoch    78: reducing learning rate of group 0 to 3.2000e-04.
+Epoch    89: reducing learning rate of group 0 to 2.5600e-04.
+Epoch   100: reducing learning rate of group 0 to 2.0480e-04.
+Epoch   111: reducing learning rate of group 0 to 1.6384e-04.
+Epoch   122: reducing learning rate of group 0 to 1.3107e-04.
+Epoch   133: reducing learning rate of group 0 to 1.0486e-04.
+Epoch   144: reducing learning rate of group 0 to 8.3886e-05.
+Epoch   155: reducing learning rate of group 0 to 6.7109e-05.
+Epoch   166: reducing learning rate of group 0 to 5.3687e-05.
+Epoch   177: reducing learning rate of group 0 to 4.2950e-05.
+Epoch   188: reducing learning rate of group 0 to 3.4360e-05.
+Epoch   199: reducing learning rate of group 0 to 2.7488e-05.
+Epoch   210: reducing learning rate of group 0 to 2.1990e-05.
+Epoch   221: reducing learning rate of group 0 to 1.7592e-05.
+
+!! LR EQUAL TO MIN LR SET.
+Test AUC: 0.7524
+Train AUC: 0.8550
+Val AUC: 0.8022
+Convergence Time (Epochs): 220.0000
+TOTAL TIME TAKEN: 9826.0632s
+AVG TIME PER EPOCH: 44.0322s
