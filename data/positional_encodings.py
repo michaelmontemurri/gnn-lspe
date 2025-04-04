@@ -416,3 +416,39 @@ def degree_positional_encoding(g, pos_enc_dim):
     g.ndata['pos_enc'] = degrees
 
     return g
+
+def closeness_positional_encoding(g, pos_enc_dim):
+    """
+    Compute closeness centrality encoding.
+    """
+    G_nx = g.to_networkx().to_undirected()
+
+    closeness_dict = nx.closeness_centrality(G_nx)
+
+    closeness = torch.zeros(g.num_nodes())
+    for node, value in closeness_dict.items():
+        closeness[node] = value
+
+    closeness = closeness.unsqueeze(1).repeat(1, pos_enc_dim)  # shape [N, pos_enc_dim]
+
+    g.ndata['pos_enc'] = closeness
+
+    return g
+
+def betweenness_positional_encoding(g, pos_enc_dim):
+    """
+    Compute closeness centrality encoding.
+    """
+    G_nx = g.to_networkx().to_undirected()
+
+    betweenness_dict = nx.betweenness_centrality(G_nx, normalized=True)
+
+    betweenness = torch.zeros(g.num_nodes())
+    for node, value in betweenness_dict.items():
+        betweenness[node] = value
+
+    betweenness = betweenness.unsqueeze(1).repeat(1, pos_enc_dim)  # shape [N, pos_enc_dim]
+
+    g.ndata['pos_enc'] = betweenness
+
+    return g

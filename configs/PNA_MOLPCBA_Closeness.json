@@ -1,0 +1,45 @@
+{
+    "gpu": {
+        "use": true,
+        "id": 0
+    },
+    "model": "PNA",
+    "dataset": "OGBG-MOLPCBA",
+    "out_dir": "out/PNA_MOLPCBA_Closeness.json/",
+    "params": {
+        "seed": 41,
+        "epochs": 1000,
+        "batch_size": 512,
+        "init_lr": 0.0005,
+        "lr_reduce_factor": 0.8,
+        "lr_schedule_patience": 10,
+        "min_lr": 2e-05,
+        "weight_decay": 3e-06,
+        "print_epoch_interval": 5,
+        "max_time": 96
+    },
+    "net_params": {
+        "L": 4,
+        "hidden_dim": 322,
+        "out_dim": 322,
+        "residual": true,
+        "edge_feat": true,
+        "readout": "sum",
+        "in_feat_dropout": 0.0,
+        "dropout": 0.4,
+        "dropout_2": 0.1,
+        "graph_norm": true,
+        "batch_norm": true,
+        "aggregators": "mean sum max",
+        "scalers": "identity",
+        "gru": false,
+        "edge_dim": 16,
+        "pretrans_layers": 1,
+        "posttrans_layers": 1,
+        "use_lapeig_loss": false,
+        "alpha_loss": 0.01,
+        "lambda_loss": 0.01,
+        "pe_init": "closeness",
+        "pos_enc_dim": 16
+    }
+}

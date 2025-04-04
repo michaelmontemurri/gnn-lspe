@@ -50,7 +50,7 @@ class PNANet(nn.Module):
         
         self.pos_enc_dim = net_params['pos_enc_dim']
         
-        if self.pe_init in ['rand_walk', 'degree']:
+        if self.pe_init in ['rand_walk', 'degree', 'closeness', 'betweenness']:
             self.embedding_p = nn.Linear(self.pos_enc_dim, hidden_dim)        
 
         self.in_feat_dropout = nn.Dropout(in_feat_dropout)
@@ -61,7 +61,7 @@ class PNANet(nn.Module):
             self.embedding_e = nn.Embedding(num_bond_type, edge_dim)
             
         
-        if self.pe_init in ['rand_walk', 'degree']:
+        if self.pe_init in ['rand_walk', 'degree', 'closeness', 'betweenness']:
             # LSPE
             self.layers = nn.ModuleList([PNALSPELayer(in_dim=hidden_dim, out_dim=hidden_dim, dropout=dropout,
                                                   graph_norm=self.graph_norm, batch_norm=self.batch_norm,
@@ -97,7 +97,7 @@ class PNANet(nn.Module):
 
         self.MLP_layer = MLPReadout(out_dim, 1)  # 1 out dim since regression problem
         
-        if self.pe_init in ['rand_walk', 'degree']:
+        if self.pe_init in ['rand_walk', 'degree', 'closeness', 'betweenness']:
             self.p_out = nn.Linear(out_dim, self.pos_enc_dim)
             self.Whp = nn.Linear(out_dim+self.pos_enc_dim, out_dim)
         
@@ -107,7 +107,7 @@ class PNANet(nn.Module):
         h = self.embedding_h(h)
         h = self.in_feat_dropout(h)
         
-        if self.pe_init in ['rand_walk', 'degree']:
+        if self.pe_init in ['rand_walk', 'degree', 'closeness', 'betweenness']:
             p = self.embedding_p(p) 
         
         if self.edge_feat:
@@ -121,7 +121,7 @@ class PNANet(nn.Module):
 
         g.ndata['h'] = h
         
-        if self.pe_init in ['rand_walk', 'degree']:
+        if self.pe_init in ['rand_walk', 'degree', 'closeness', 'betweenness']:
             # Implementing p_g = p_g - torch.mean(p_g, dim=0)
             p = self.p_out(p)
             g.ndata['p'] = p

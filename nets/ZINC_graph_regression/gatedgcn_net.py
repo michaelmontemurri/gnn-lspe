@@ -38,7 +38,7 @@ class GatedGCNNet(nn.Module):
         
         self.pos_enc_dim = net_params['pos_enc_dim']
         
-        if self.pe_init in ['rand_walk', 'lap_pe', 'degree']:
+        if self.pe_init in ['rand_walk', 'lap_pe', 'degree', 'closeness', 'betweenness']:
             self.embedding_p = nn.Linear(self.pos_enc_dim, hidden_dim)
 
         self.embedding_h = nn.Embedding(num_atom_type, hidden_dim)
@@ -50,7 +50,7 @@ class GatedGCNNet(nn.Module):
         
         self.in_feat_dropout = nn.Dropout(in_feat_dropout)
         
-        if self.pe_init in ['rand_walk', 'degree']:
+        if self.pe_init in ['rand_walk', 'degree', 'closeness', 'betweenness']:
             # LSPE
             self.layers = nn.ModuleList([ GatedGCNLSPELayer(hidden_dim, hidden_dim, dropout,
                                                         self.batch_norm, residual=self.residual) for _ in range(self.n_layers-1) ]) 
@@ -63,7 +63,7 @@ class GatedGCNNet(nn.Module):
         
         self.MLP_layer = MLPReadout(out_dim, 1)   # 1 out dim since regression problem        
 
-        if self.pe_init in ['rand_walk', 'degree']:
+        if self.pe_init in ['rand_walk', 'degree', 'closeness', 'betweenness']:
             self.p_out = nn.Linear(out_dim, self.pos_enc_dim)
             self.Whp = nn.Linear(out_dim+self.pos_enc_dim, out_dim)
         
@@ -76,7 +76,7 @@ class GatedGCNNet(nn.Module):
         h = self.embedding_h(h)
         h = self.in_feat_dropout(h)
         
-        if self.pe_init in ['rand_walk', 'lap_pe', 'degree']:
+        if self.pe_init in ['rand_walk', 'lap_pe', 'degree', 'closeness', 'betweenness']:
             p = self.embedding_p(p) 
             
         if self.pe_init == 'lap_pe':
@@ -94,7 +94,7 @@ class GatedGCNNet(nn.Module):
             
         g.ndata['h'] = h
         
-        if self.pe_init in ['rand_walk', 'degree']:
+        if self.pe_init in ['rand_walk', 'degree', 'closeness', 'betweenness']:
             # Implementing p_g = p_g - torch.mean(p_g, dim=0)
             p = self.p_out(p)
             g.ndata['p'] = p

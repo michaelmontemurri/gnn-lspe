@@ -140,6 +140,28 @@ def train_val_pipeline(MODEL_NAME, dataset, params, net_params, dirs):
         print("[!] -degree (For viz later): Adding lapeigvecs to key 'eigvec' for every graph.")
         dataset._add_eig_vecs(net_params['pos_enc_dim'])  # optional, for visualization
         print("[!] Time taken: ", time.time()-tt)
+
+    elif net_params['pe_init'] == 'closeness':
+        tt = time.time()
+        print("[!] -closeness: Initializing graph positional encoding using closeness centrality.")
+        dataset._init_positional_encodings(net_params['pos_enc_dim'], net_params['pe_init'])  # uses closeness_positional_encoding internally
+        print("[!] Time taken: ", time.time()-tt)
+
+        tt = time.time()
+        print("[!] -closeness (For viz later): Adding lapeigvecs to key 'eigvec' for every graph.")
+        dataset._add_eig_vecs(net_params['pos_enc_dim'])  # optional, for visualization
+        print("[!] Time taken: ", time.time()-tt)
+
+    elif net_params['pe_init'] == 'betweenness':
+        tt = time.time()
+        print("[!] -betweenness: Initializing graph positional encoding using betweenness centrality.")
+        dataset._init_positional_encodings(net_params['pos_enc_dim'], net_params['pe_init'])  # uses betweenness_positional_encoding internally
+        print("[!] Time taken: ", time.time()-tt)
+
+        tt = time.time()
+        print("[!] -betweenness (For viz later): Adding lapeigvecs to key 'eigvec' for every graph.")
+        dataset._add_eig_vecs(net_params['pos_enc_dim'])  # optional, for visualization
+        print("[!] Time taken: ", time.time()-tt)
     
         
     if MODEL_NAME in ['SAN', 'GraphiT']:

@@ -161,6 +161,10 @@ def init_positional_encoding(g, pos_enc_dim, type_init):
         return spe_positional_encoding(g, pos_enc_dim, solver="SCS", plot=False)
     elif type_init == 'degree':
         return degree_positional_encoding(g, pos_enc_dim)
+    elif type_init == 'closeness':
+        return closeness_positional_encoding(g, pos_enc_dim)
+    elif type_init == 'betweenness':
+        return betweenness_positional_encoding(g, pos_enc_dim)
     else:
         raise ValueError(f"Unsupported positional encoding type: {type_init}")
 

@@ -53,7 +53,7 @@ class PNANet(nn.Module):
         
         self.pos_enc_dim = net_params['pos_enc_dim']
         
-        if self.pe_init in ['rand_walk', 'degree']:
+        if self.pe_init in ['rand_walk', 'degree', 'closeness', 'betweenness']:
             self.embedding_p = nn.Linear(self.pos_enc_dim, hidden_dim)
         
         self.embedding_h = AtomEncoder(emb_dim=hidden_dim)
@@ -62,7 +62,7 @@ class PNANet(nn.Module):
             self.embedding_e = BondEncoder(emb_dim=edge_dim)
 
         
-        if self.pe_init in ['rand_walk', 'degree']:
+        if self.pe_init in ['rand_walk', 'degree', 'closeness', 'betweenness']:
             # LSPE
             self.layers = nn.ModuleList(
                 [PNALSPELayer(in_dim=hidden_dim, out_dim=hidden_dim, dropout=dropout, graph_norm=self.graph_norm,
@@ -93,7 +93,7 @@ class PNANet(nn.Module):
         
         self.MLP_layer = MLPReadout(out_dim, n_classes, self.dropout_2)
 
-        if self.pe_init in ['rand_walk', 'degree']:
+        if self.pe_init in ['rand_walk', 'degree', 'closeness', 'betweenness']:
             self.p_out = nn.Linear(out_dim, self.pos_enc_dim)
             self.Whp = nn.Linear(out_dim+self.pos_enc_dim, out_dim)
         
@@ -103,7 +103,7 @@ class PNANet(nn.Module):
         
         h = self.embedding_h(h)
         
-        if self.pe_init in ['rand_walk', 'degree']:
+        if self.pe_init in ['rand_walk', 'degree', 'closeness', 'betweenness']:
             p = self.embedding_p(p)
 
         if self.edge_feat:
@@ -117,7 +117,7 @@ class PNANet(nn.Module):
 
         g.ndata['h'] = h
 
-        if self.pe_init in ['rand_walk', 'degree']:
+        if self.pe_init in ['rand_walk', 'degree', 'closeness', 'betweenness']:
             p = F.dropout(p, self.dropout_2, training=self.training)
             p = self.p_out(p)
             g.ndata['p'] = p
@@ -137,7 +137,7 @@ class PNANet(nn.Module):
             p = p / batch_wise_p_l2_norms
             g.ndata['p'] = p
         
-        if self.pe_init in ['rand_walk', 'degree']:
+        if self.pe_init in ['rand_walk', 'degree', 'closeness', 'betweenness']:
             # Concat h and p
             hp = torch.cat((g.ndata['h'],g.ndata['p']),dim=-1)
             hp = F.dropout(hp, self.dropout_2, training=self.training)

@@ -50,13 +50,13 @@ class GraphiTNet(nn.Module):
         
         self.pos_enc_dim = net_params['pos_enc_dim']
         
-        if self.pe_init in ['rand_walk', 'degree']:
+        if self.pe_init in ['rand_walk', 'degree', 'closeness', 'betweenness']:
             self.embedding_p = nn.Linear(self.pos_enc_dim, GT_hidden_dim)
         
         self.embedding_h = nn.Embedding(num_atom_type, GT_hidden_dim)
         self.embedding_e = nn.Embedding(num_bond_type, GT_hidden_dim)
         
-        if self.pe_init in ['rand_walk', 'degree']:
+        if self.pe_init in ['rand_walk', 'degree', 'closeness', 'betweenness']:
             # LSPE
             self.layers = nn.ModuleList([ GraphiT_GT_LSPE_Layer(gamma, GT_hidden_dim, GT_hidden_dim, GT_n_heads, full_graph, dropout,
                                                                 self.layer_norm, self.batch_norm, self.residual, self.adaptive_edge_PE) for _ in range(GT_layers-1) ])
@@ -71,7 +71,7 @@ class GraphiTNet(nn.Module):
         
         self.MLP_layer = MLPReadout(GT_out_dim, 1)   # 1 out dim since regression problem        
         
-        if self.pe_init in ['rand_walk', 'degree']:
+        if self.pe_init in ['rand_walk', 'degree', 'closeness', 'betweenness']:
             self.p_out = nn.Linear(GT_out_dim, self.pos_enc_dim)
             self.Whp = nn.Linear(GT_out_dim+self.pos_enc_dim, GT_out_dim)
         
@@ -86,7 +86,7 @@ class GraphiTNet(nn.Module):
         
         h = self.in_feat_dropout(h)
         
-        if self.pe_init in ['rand_walk', 'degree']:
+        if self.pe_init in ['rand_walk', 'degree', 'closeness', 'betweenness']:
             p = self.embedding_p(p) 
         
         # GNN
@@ -94,11 +94,11 @@ class GraphiTNet(nn.Module):
             h, p = conv(g, h, p, e, snorm_n)
         g.ndata['h'] = h
         
-        if self.pe_init in ['rand_walk', 'degree']:
+        if self.pe_init in ['rand_walk', 'degree', 'closeness', 'betweenness']:
             p = self.p_out(p)
             g.ndata['p'] = p
         
-        if self.use_lapeig_loss and self.pe_init == 'rand_walk':
+        if self.use_lapeig_loss and self.pe_init in ['rand_walk', 'degree', 'closeness', 'betweenness']:
             # Implementing p_g = p_g - torch.mean(p_g, dim=0)
             means = dgl.mean_nodes(g, 'p')
             batch_wise_p_means = means.repeat_interleave(g.batch_num_nodes(), 0)
@@ -113,7 +113,7 @@ class GraphiTNet(nn.Module):
             p = p / batch_wise_p_l2_norms
             g.ndata['p'] = p
         
-        if self.pe_init in ['rand_walk', 'degree']:
+        if self.pe_init in ['rand_walk', 'degree', 'closeness', 'betweenness']:
             # Concat h and p
             hp = self.Whp(torch.cat((g.ndata['h'],g.ndata['p']),dim=-1))
             g.ndata['h'] = hp
