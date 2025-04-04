@@ -1,0 +1,29 @@
+cuda not available
+[I] Loading dataset OGBG-MOLTOX21...
+[I] Finished loading.
+[I] Data load time: 1.1202s
+MODEL DETAILS:
+
+MODEL/Total parameters: GatedGCN 1063939
+[!] -betweenness: Initializing graph positional encoding using betweenness centrality.
+[!] Time taken:  14.749964475631714
+[!] -betweenness (For viz later): Adding lapeigvecs to key 'eigvec' for every graph.
+[!] Time taken:  10.836262941360474
+Training Graphs:  6015
+Validation Graphs:  782
+Test Graphs:  782
+Epoch    99: reducing learning rate of group 0 to 5.0000e-04.
+Epoch   125: reducing learning rate of group 0 to 2.5000e-04.
+Epoch   151: reducing learning rate of group 0 to 1.2500e-04.
+Epoch   177: reducing learning rate of group 0 to 6.2500e-05.
+Epoch   203: reducing learning rate of group 0 to 3.1250e-05.
+Epoch   229: reducing learning rate of group 0 to 1.5625e-05.
+Epoch   255: reducing learning rate of group 0 to 7.8125e-06.
+
+!! LR EQUAL TO MIN LR SET.
+Test AUC: 0.7670
+Train AUC: 0.8934
+Val AUC: 0.8062
+Convergence Time (Epochs): 254.0000
+TOTAL TIME TAKEN: 5065.9204s
+AVG TIME PER EPOCH: 19.6811s
