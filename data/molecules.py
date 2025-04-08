@@ -188,12 +188,16 @@ def de_gpr_positional_encoding(g, pos_enc_dim, alpha = 0.2):
 
     # Random sample the nodes to get an anchor set, ensuring it is smaller than n
     np.random.seed(41)
-    num_anchors = min(pos_enc_dim, n)
+    num_anchors = min(math.ceil(np.log2(n)), n)
+    # print("Number of Nodes: ", n)
+    # print("Number of anchors: ", num_anchors)
+    # print(g.ndata)
+    # exit(1)
     anchors = np.random.choice(n, size=num_anchors, replace=False)
     features = np.zeros((n, pos_enc_dim))
 
     # Calculate Gamma
-    gamma = [(1 - alpha) * (alpha ** k) for k in range(pos_enc_dim)]
+    gamma = [(1 - alpha) * (alpha ** k) for k in range(num_anchors)]
 
     # Compute generalized page rank scores
     for i, v in enumerate(anchors):
@@ -203,7 +207,7 @@ def de_gpr_positional_encoding(g, pos_enc_dim, alpha = 0.2):
 
         gpr_vec = np.zeros((n, ))
         pow_W = x.copy()
-        for k in range(pos_enc_dim):
+        for k in range(num_anchors):
             gpr_vec += gamma[k] * pow_W
             pow_W = W @ pow_W
 
