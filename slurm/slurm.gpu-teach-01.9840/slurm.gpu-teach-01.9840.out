@@ -1,0 +1,89 @@
+Running nvidia-smi check:
+Mon Apr  7 18:49:21 2025       
++-----------------------------------------------------------------------------------------+
+| NVIDIA-SMI 555.42.06              Driver Version: 555.42.06      CUDA Version: 12.5     |
+|-----------------------------------------+------------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
+|                                         |                        |               MIG M. |
+|=========================================+========================+======================|
+|   0  NVIDIA RTX A2000 12GB          Off |   00000000:4F:00.0 Off |                  Off |
+| 30%   21C    P8              9W /   70W |       2MiB /  12282MiB |      0%      Default |
+|                                         |                        |                  N/A |
++-----------------------------------------+------------------------+----------------------+
+                                                                                         
++-----------------------------------------------------------------------------------------+
+| Processes:                                                                              |
+|  GPU   GI   CI        PID   Type   Process name                              GPU Memory |
+|        ID   ID                                                               Usage      |
+|=========================================================================================|
+|  No running processes found                                                             |
++-----------------------------------------------------------------------------------------+
+Checking CUDA version:
+nvcc: NVIDIA (R) Cuda compiler driver
+Copyright (c) 2005-2024 NVIDIA Corporation
+Built on Wed_Aug_14_10:10:22_PDT_2024
+Cuda compilation tools, release 12.6, V12.6.68
+Build cuda_12.6.r12.6/compiler.34714021_0
+Checking if CUDA is available in Python (PyTorch):
+/home/2022/hleung28/.conda/envs/gnn_lspe_gpu/bin/python
+PyTorch version: 2.0.1
+CUDA available: False
+CUDA device: None
+Checking GPU details with PyTorch:
+Checking available GPUs on the system:
+GPU 0: NVIDIA RTX A2000 12GB (UUID: GPU-d0ffeb8b-a91f-514e-74a2-55c03a8fb026)
+Checking active GPU processes:
+Mon Apr  7 18:50:07 2025       
++-----------------------------------------------------------------------------------------+
+| NVIDIA-SMI 555.42.06              Driver Version: 555.42.06      CUDA Version: 12.5     |
+|-----------------------------------------+------------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
+|                                         |                        |               MIG M. |
+|=========================================+========================+======================|
+|   0  NVIDIA RTX A2000 12GB          Off |   00000000:4F:00.0 Off |                  Off |
+| 30%   21C    P8              9W /   70W |       2MiB /  12282MiB |      0%      Default |
+|                                         |                        |                  N/A |
++-----------------------------------------+------------------------+----------------------+
+                                                                                         
++-----------------------------------------------------------------------------------------+
+| Processes:                                                                              |
+|  GPU   GI   CI        PID   Type   Process name                              GPU Memory |
+|        ID   ID                                                               Usage      |
+|=========================================================================================|
+|  No running processes found                                                             |
++-----------------------------------------------------------------------------------------+
+Starting the training script:
+cuda not available
+[I] Loading dataset OGBG-MOLTOX21...
+[I] Finished loading.
+[I] Data load time: 1.3863s
+MODEL DETAILS:
+
+MODEL/Total parameters: GraphiT 1051852
+[!] -closeness: Initializing graph positional encoding using closeness centrality.
+[!] Time taken:  4.875122308731079
+[!] -closeness (For viz later): Adding lapeigvecs to key 'eigvec' for every graph.
+[!] Time taken:  13.248241424560547
+[!] Adding full graph connectivity..
+Time taken to add full graph connectivity:  63.54006505012512
+Training Graphs:  6015
+Validation Graphs:  782
+Test Graphs:  782
+Epoch 00044: reducing learning rate of group 0 to 3.5000e-04.
+Epoch 00070: reducing learning rate of group 0 to 1.7500e-04.
+Epoch 00096: reducing learning rate of group 0 to 8.7500e-05.
+Epoch 00122: reducing learning rate of group 0 to 4.3750e-05.
+Epoch 00148: reducing learning rate of group 0 to 2.1875e-05.
+Epoch 00174: reducing learning rate of group 0 to 1.0937e-05.
+Epoch 00200: reducing learning rate of group 0 to 5.4687e-06.
+Epoch 00226: reducing learning rate of group 0 to 2.7344e-06.
+-----------------------------------------------------------------------------------------
+Max_time for training elapsed 11.50 hours, so stopping
+Test AUC: 0.7530
+Train AUC: 0.9046
+Val AUC: 0.8012
+Convergence Time (Epochs): 228.0000
+TOTAL TIME TAKEN: 41458.9757s
+AVG TIME PER EPOCH: 180.5107s

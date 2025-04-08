@@ -1,0 +1,133 @@
+Running nvidia-smi check:
+Mon Apr  7 01:26:34 2025       
++-----------------------------------------------------------------------------------------+
+| NVIDIA-SMI 555.42.06              Driver Version: 555.42.06      CUDA Version: 12.5     |
+|-----------------------------------------+------------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
+|                                         |                        |               MIG M. |
+|=========================================+========================+======================|
+|   0  NVIDIA RTX A2000 12GB          Off |   00000000:4F:00.0 Off |                  Off |
+| 30%   21C    P8              9W /   70W |       2MiB /  12282MiB |      0%      Default |
+|                                         |                        |                  N/A |
++-----------------------------------------+------------------------+----------------------+
+                                                                                         
++-----------------------------------------------------------------------------------------+
+| Processes:                                                                              |
+|  GPU   GI   CI        PID   Type   Process name                              GPU Memory |
+|        ID   ID                                                               Usage      |
+|=========================================================================================|
+|  No running processes found                                                             |
++-----------------------------------------------------------------------------------------+
+Checking CUDA version:
+nvcc: NVIDIA (R) Cuda compiler driver
+Copyright (c) 2005-2024 NVIDIA Corporation
+Built on Wed_Aug_14_10:10:22_PDT_2024
+Cuda compilation tools, release 12.6, V12.6.68
+Build cuda_12.6.r12.6/compiler.34714021_0
+Checking if CUDA is available in Python (PyTorch):
+CUDA available: False
+Checking GPU details with PyTorch:
+Checking available GPUs on the system:
+GPU 0: NVIDIA RTX A2000 12GB (UUID: GPU-d0ffeb8b-a91f-514e-74a2-55c03a8fb026)
+Checking disk usage:
+Filesystem                                                      Size  Used Avail Use% Mounted on
+tmpfs                                                           6.3G  5.7M  6.3G   1% /run
+/dev/mapper/vg--cs-lv--root                                     842G  603G  197G  76% /
+tmpfs                                                            32G  348K   32G   1% /dev/shm
+tmpfs                                                           5.0M     0  5.0M   0% /run/lock
+/dev/nvme0n1p1                                                  253M  6.1M  247M   3% /boot/efi
+/dev/nvme1n1p1                                                  7.0T  297G  6.7T   5% /mnt/teaching
+/dev/mapper/vg--cs-lv--home                                     2.0G  316K  1.8G   1% /home
+/dev/mapper/vg--cs-lv--tmp                                      3.9G  3.2G  459M  88% /tmp
+/dev/mapper/vg--cs-lv--var                                       12G  1.4G  9.8G  12% /var
+/dev/mapper/vg--cs-lv--var--log                                 9.8G  995M  8.3G  11% /var/log
+/dev/mapper/vg--cs-lv--var--tmp                                 2.0G  281M  1.6G  16% /var/tmp
+/dev/mapper/vg--cs-lv--var--log--audit                          4.9G   35M  4.6G   1% /var/log/audit
+storage.cs.mcgill.ca:/mnt/pool0/cs/2015                         800G  587G  214G  74% /home/2015
+storage.cs.mcgill.ca:/mnt/pool0/cs/packages/jammy               114T  125G  114T   1% /usr/local/pkgs
+storage.cs.mcgill.ca:/mnt/pool0/cs/2012                         500G  338G  163G  68% /home/2012
+storage.cs.mcgill.ca:/mnt/pool0/cs/socs                         400G  163G  238G  41% /home/socs
+storage.cs.mcgill.ca:/mnt/pool0/cs/packages/jammy/applications  114T  125G  114T   1% /usr/local/share/applications
+storage.cs.mcgill.ca:/mnt/pool0/cs/2004                         200G   91G  110G  46% /home/2004
+storage.cs.mcgill.ca:/mnt/pool0/cs/2007                         200G   96G  105G  48% /home/2007
+storage.cs.mcgill.ca:/mnt/pool0/cs/2009                         200G  152G   49G  76% /home/2009
+storage.cs.mcgill.ca:/mnt/pool0/cs/2001                          50G   15G   36G  30% /home/2001
+storage.cs.mcgill.ca:/mnt/pool0/cs/2011                         325G  271G   55G  84% /home/2011
+storage.cs.mcgill.ca:/mnt/pool0/cs/2006                         250G   98G  153G  40% /home/2006
+storage.cs.mcgill.ca:/mnt/pool0/cs/2008                         400G  154G  247G  39% /home/2008
+storage.cs.mcgill.ca:/mnt/pool0/cs/2005                         150G  119G   32G  79% /home/2005
+storage.cs.mcgill.ca:/mnt/pool0/cs/2016                         700G  588G  113G  84% /home/2016
+storage.cs.mcgill.ca:/mnt/pool0/cs/2018                         700G  560G  141G  80% /home/2018
+storage.cs.mcgill.ca:/mnt/pool0/cs/2022                         1.5T  1.1T  490G  69% /home/2022
+storage.cs.mcgill.ca:/mnt/pool0/cs/2014                         1.5T  877G  660G  58% /home/2014
+storage.cs.mcgill.ca:/mnt/pool0/cs/2002                          50G   30G   21G  60% /home/2002
+storage.cs.mcgill.ca:/mnt/pool0/cs/2021                         900G  616G  285G  69% /home/2021
+storage.cs.mcgill.ca:/mnt/pool0/cs/2023                         950G  838G  113G  89% /home/2023
+storage.cs.mcgill.ca:/mnt/pool0/cs/2013                         700G  539G  162G  77% /home/2013
+storage.cs.mcgill.ca:/mnt/pool0/cs/2000                         250G  191G   60G  77% /home/2000
+storage.cs.mcgill.ca:/mnt/pool0/cs/2003                          50G   41G  9.9G  81% /home/2003
+storage.cs.mcgill.ca:/mnt/pool0/cs/2020                         700G  603G   98G  87% /home/2020
+storage.cs.mcgill.ca:/mnt/pool0/cs/course                       450G  365G   86G  81% /home/course
+storage.cs.mcgill.ca:/mnt/pool0/cs/2010                         400G  208G  193G  52% /home/2010
+storage.cs.mcgill.ca:/mnt/pool0/cs/2024                         700G  523G  178G  75% /home/2024
+storage.cs.mcgill.ca:/mnt/pool0/cs/2017                         900G  778G  123G  87% /home/2017
+storage.cs.mcgill.ca:/mnt/pool0/cs/2019                         700G  595G  106G  85% /home/2019
+storage.cs.mcgill.ca:/mnt/pool0/cs/guest                        500G  338G  163G  68% /home/guest
+tmpfs                                                           6.3G   36K  6.3G   1% /run/user/1476067
+Checking active GPU processes:
+Mon Apr  7 01:27:05 2025       
++-----------------------------------------------------------------------------------------+
+| NVIDIA-SMI 555.42.06              Driver Version: 555.42.06      CUDA Version: 12.5     |
+|-----------------------------------------+------------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
+|                                         |                        |               MIG M. |
+|=========================================+========================+======================|
+|   0  NVIDIA RTX A2000 12GB          Off |   00000000:4F:00.0 Off |                  Off |
+| 30%   21C    P8              9W /   70W |       2MiB /  12282MiB |      0%      Default |
+|                                         |                        |                  N/A |
++-----------------------------------------+------------------------+----------------------+
+                                                                                         
++-----------------------------------------------------------------------------------------+
+| Processes:                                                                              |
+|  GPU   GI   CI        PID   Type   Process name                              GPU Memory |
+|        ID   ID                                                               Usage      |
+|=========================================================================================|
+|  No running processes found                                                             |
++-----------------------------------------------------------------------------------------+
+Starting the training script:
+cuda not available
+[I] Loading dataset OGBG-MOLTOX21...
+[I] Finished loading.
+[I] Data load time: 0.9531s
+MODEL DETAILS:
+
+MODEL/Total parameters: SAN 1051081
+[!] -closeness: Initializing graph positional encoding using closeness centrality.
+[!] Time taken:  13.493966341018677
+[!] -closeness (For viz later): Adding lapeigvecs to key 'eigvec' for every graph.
+[!] Time taken:  11.177931547164917
+[!] Adding full graph connectivity..
+Time taken to add full graph connectivity:  26.07891583442688
+Training Graphs:  6015
+Validation Graphs:  782
+Test Graphs:  782
+Epoch 00043: reducing learning rate of group 0 to 3.5000e-04.
+Epoch 00069: reducing learning rate of group 0 to 1.7500e-04.
+Epoch 00095: reducing learning rate of group 0 to 8.7500e-05.
+Epoch 00121: reducing learning rate of group 0 to 4.3750e-05.
+Epoch 00147: reducing learning rate of group 0 to 2.1875e-05.
+Epoch 00173: reducing learning rate of group 0 to 1.0937e-05.
+Epoch 00199: reducing learning rate of group 0 to 5.4687e-06.
+Epoch 00225: reducing learning rate of group 0 to 2.7344e-06.
+Epoch 00251: reducing learning rate of group 0 to 1.3672e-06.
+Epoch 00277: reducing learning rate of group 0 to 6.8359e-07.
+
+!! LR EQUAL TO MIN LR SET.
+Test AUC: 0.7515
+Train AUC: 0.8823
+Val AUC: 0.7977
+Convergence Time (Epochs): 276.0000
+TOTAL TIME TAKEN: 38136.2468s
+AVG TIME PER EPOCH: 137.3559s
