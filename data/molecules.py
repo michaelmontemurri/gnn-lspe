@@ -186,14 +186,74 @@ def de_gpr_positional_encoding(g, pos_enc_dim, alpha = 0.2):
 
     n = g.number_of_nodes()
 
-    # Random sample the nodes to get an anchor set, ensuring it is smaller than n
+    """
+    Node labels (ZINC):
+
+    'C': 0
+    'O': 1
+    'N': 2
+    'F': 3
+    'C H1': 4
+    'S': 5
+    'Cl': 6
+    'O -': 7
+    'N H1 +': 8
+    'Br': 9
+    'N H3 +': 10
+    'N H2 +': 11
+    'N +': 12
+    'N -': 13
+    'S -': 14
+    'I': 15
+    'P': 16
+    'O H1 +': 17
+    'N H1 -': 18
+    'O +': 19
+    'S +': 20
+    'P H1': 21
+    'P H2': 22
+    'C H2 -': 23
+    'P +': 24
+    'S H1 +': 25
+    'C H1 -': 26
+    'P H1 +': 27
+    
+    Edge labels:
+    
+    'SINGLE': 1
+    'DOUBLE': 2
+    'TRIPLE': 3
+    """
+
+
+    # Anchor set S is chosen from the most frequent atom types with log_2(n) elements
     np.random.seed(41)
     num_anchors = min(math.ceil(np.log2(n)), n)
-    # print("Number of Nodes: ", n)
-    # print("Number of anchors: ", num_anchors)
-    # print(g.ndata)
-    # exit(1)
-    anchors = np.random.choice(n, size=num_anchors, replace=False)
+    atoms = g.ndata['feat']
+
+    atom_types, freq = torch.unique(atoms, return_counts=True)
+    sorted_indx = torch.argsort(freq, descending=True)
+    sorted_atoms = atom_types[sorted_indx]
+
+    anchors = []
+
+    for atom_type in sorted_atoms:
+        indices = (atoms == atom_type).nonzero(as_tuple=False).squeeze().cpu().numpy()
+
+        # How many anchors of this element to select
+        remaining = num_anchors - len(anchors)
+        if remaining <= 0:
+            break
+
+        count = min(len(indices), remaining)
+        sampled = np.random.choice(indices, size=count, replace=False)
+        anchors.extend(sampled.tolist())
+
+    if len(anchors) < num_anchors:
+        remaining_indices = np.setdiff1d(np.arange(n), np.array(anchors))
+        extra = np.random.choice(remaining_indices, size=num_anchors - len(anchors), replace=False)
+        anchors.extend(extra.tolist())
+
     features = np.zeros((n, pos_enc_dim))
 
     # Calculate Gamma
