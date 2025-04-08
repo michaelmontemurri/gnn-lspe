@@ -1,0 +1,64 @@
+Dataset: ogbg-moltox21,
+Model: GatedGCN
+
+params={'seed': 41, 'epochs': 1000, 'batch_size': 256, 'init_lr': 0.001, 'lr_reduce_factor': 0.5, 'lr_schedule_patience': 25, 'min_lr': 1e-05, 'weight_decay': 0.0, 'print_epoch_interval': 1, 'max_time': 48}
+
+net_params={'L': 8, 'hidden_dim': 118, 'out_dim': 118, 'residual': True, 'edge_feat': True, 'readout': 'mean', 'in_feat_dropout': 0.0, 'dropout': 0.4, 'batch_norm': True, 'pos_enc_dim': 16, 'pe_init': 'closeness', 'use_lapeig_loss': False, 'alpha_loss': 0.001, 'lambda_loss': 100, 'device': device(type='cpu'), 'gpu_id': 0, 'batch_size': 256, 'n_classes': 12, 'total_param': 1063939}
+
+GatedGCNNet(
+  (embedding_p): Linear(in_features=16, out_features=118, bias=True)
+  (atom_encoder): AtomEncoder(
+    (atom_embedding_list): ModuleList(
+      (0): Embedding(119, 118)
+      (1): Embedding(5, 118)
+      (2): Embedding(12, 118)
+      (3): Embedding(12, 118)
+      (4): Embedding(10, 118)
+      (5): Embedding(6, 118)
+      (6): Embedding(6, 118)
+      (7): Embedding(2, 118)
+      (8): Embedding(2, 118)
+    )
+  )
+  (bond_encoder): BondEncoder(
+    (bond_embedding_list): ModuleList(
+      (0): Embedding(5, 118)
+      (1): Embedding(6, 118)
+      (2): Embedding(2, 118)
+    )
+  )
+  (layers): ModuleList(
+    (0): GatedGCNLSPELayer(in_channels=118, out_channels=118)
+    (1): GatedGCNLSPELayer(in_channels=118, out_channels=118)
+    (2): GatedGCNLSPELayer(in_channels=118, out_channels=118)
+    (3): GatedGCNLSPELayer(in_channels=118, out_channels=118)
+    (4): GatedGCNLSPELayer(in_channels=118, out_channels=118)
+    (5): GatedGCNLSPELayer(in_channels=118, out_channels=118)
+    (6): GatedGCNLSPELayer(in_channels=118, out_channels=118)
+    (7): GatedGCNLSPELayer(in_channels=118, out_channels=118)
+  )
+  (MLP_layer): MLPReadout(
+    (FC_layers): ModuleList(
+      (0): Linear(in_features=118, out_features=59, bias=True)
+      (1): Linear(in_features=59, out_features=29, bias=True)
+      (2): Linear(in_features=29, out_features=12, bias=True)
+    )
+  )
+  (p_out): Linear(in_features=118, out_features=16, bias=True)
+  (Whp): Linear(in_features=134, out_features=118, bias=True)
+)
+
+Total Parameters: 1063939
+
+
+        FINAL RESULTS
+TEST AUC: 0.7813
+TRAIN AUC: 0.8987
+VAL AUC: 0.8218
+
+
+        Convergence Time (Epochs): 311.0000
+Total Time Taken: 1.7186 hrs
+Average Time Per Epoch: 19.6631 s
+
+

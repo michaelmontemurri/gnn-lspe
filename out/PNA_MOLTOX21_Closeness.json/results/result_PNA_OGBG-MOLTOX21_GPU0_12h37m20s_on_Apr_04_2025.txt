@@ -1,0 +1,64 @@
+Dataset: ogbg-moltox21,
+Model: PNA
+
+params={'seed': 41, 'epochs': 1000, 'batch_size': 256, 'init_lr': 0.0005, 'lr_reduce_factor': 0.8, 'lr_schedule_patience': 10, 'min_lr': 2e-05, 'weight_decay': 3e-06, 'print_epoch_interval': 5, 'max_time': 96}
+
+net_params={'L': 8, 'hidden_dim': 140, 'out_dim': 140, 'residual': True, 'edge_feat': True, 'readout': 'sum', 'in_feat_dropout': 0.0, 'dropout': 0.4, 'dropout_2': 0.1, 'graph_norm': True, 'batch_norm': True, 'aggregators': 'mean max min std', 'scalers': 'identity amplification attenuation', 'gru': False, 'edge_dim': 50, 'pretrans_layers': 1, 'posttrans_layers': 1, 'lpe_variant': 'native_lpe', 'use_lapeig_loss': False, 'alpha_loss': 0.01, 'lambda_loss': 0.01, 'pe_init': 'closeness', 'pos_enc_dim': 16, 'device': device(type='cpu'), 'gpu_id': 0, 'batch_size': 256, 'n_classes': 12, 'avg_d': {'lin': tensor(2.0444), 'exp': tensor(inf), 'log': tensor(1.0783)}, 'total_param': 5357533}
+
+PNANet(
+  (embedding_p): Linear(in_features=16, out_features=140, bias=True)
+  (embedding_h): AtomEncoder(
+    (atom_embedding_list): ModuleList(
+      (0): Embedding(119, 140)
+      (1): Embedding(5, 140)
+      (2): Embedding(12, 140)
+      (3): Embedding(12, 140)
+      (4): Embedding(10, 140)
+      (5): Embedding(6, 140)
+      (6): Embedding(6, 140)
+      (7): Embedding(2, 140)
+      (8): Embedding(2, 140)
+    )
+  )
+  (embedding_e): BondEncoder(
+    (bond_embedding_list): ModuleList(
+      (0): Embedding(5, 50)
+      (1): Embedding(6, 50)
+      (2): Embedding(2, 50)
+    )
+  )
+  (layers): ModuleList(
+    (0): PNANoTowersLSPELayer(in_channels=140, out_channels=140)
+    (1): PNANoTowersLSPELayer(in_channels=140, out_channels=140)
+    (2): PNANoTowersLSPELayer(in_channels=140, out_channels=140)
+    (3): PNANoTowersLSPELayer(in_channels=140, out_channels=140)
+    (4): PNANoTowersLSPELayer(in_channels=140, out_channels=140)
+    (5): PNANoTowersLSPELayer(in_channels=140, out_channels=140)
+    (6): PNANoTowersLSPELayer(in_channels=140, out_channels=140)
+    (7): PNANoTowersLSPELayer(in_channels=140, out_channels=140)
+  )
+  (MLP_layer): MLPReadout2(
+    (FC_layers): ModuleList(
+      (0): Linear(in_features=140, out_features=70, bias=True)
+      (1): Linear(in_features=70, out_features=35, bias=True)
+      (2): Linear(in_features=35, out_features=12, bias=True)
+    )
+  )
+  (p_out): Linear(in_features=140, out_features=16, bias=True)
+  (Whp): Linear(in_features=156, out_features=140, bias=True)
+)
+
+Total Parameters: 5357533
+
+
+        FINAL RESULTS
+TEST AUC: 0.7685
+TRAIN AUC: 0.8938
+VAL AUC: 0.8094
+
+
+        Convergence Time (Epochs): 216.0000
+Total Time Taken: 2.6838 hrs
+Average Time Per Epoch: 44.1252 s
+
+

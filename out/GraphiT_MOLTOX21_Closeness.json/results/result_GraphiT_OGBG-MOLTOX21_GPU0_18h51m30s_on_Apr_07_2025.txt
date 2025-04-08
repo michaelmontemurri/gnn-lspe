@@ -1,0 +1,55 @@
+Dataset: ogbg-moltox21,
+Model: GraphiT
+
+params={'seed': 41, 'epochs': 1000, 'batch_size': 128, 'init_lr': 0.0007, 'lr_reduce_factor': 0.5, 'lr_schedule_patience': 25, 'min_lr': 1e-06, 'weight_decay': 0.0, 'print_epoch_interval': 5, 'max_time': 11.5}
+
+net_params={'full_graph': True, 'L': 10, 'hidden_dim': 64, 'out_dim': 64, 'n_heads': 8, 'residual': True, 'readout': 'sum', 'in_feat_dropout': 0.0, 'dropout': 0.5, 'layer_norm': False, 'batch_norm': True, 'use_lapeig_loss': False, 'alpha_loss': 0.0001, 'lambda_loss': 1000, 'pe_init': 'closeness', 'pos_enc_dim': 16, 'adaptive_edge_PE': True, 'p_steps': 16, 'gamma': 0.25, 'device': device(type='cpu'), 'gpu_id': 0, 'batch_size': 128, 'n_classes': 12, 'total_param': 1051852}
+
+GraphiTNet(
+  (in_feat_dropout): Dropout(p=0.0, inplace=False)
+  (embedding_p): Linear(in_features=16, out_features=64, bias=True)
+  (embedding_h): AtomEncoder(
+    (atom_embedding_list): ModuleList(
+      (0): Embedding(119, 64)
+      (1): Embedding(5, 64)
+      (2-3): 2 x Embedding(12, 64)
+      (4): Embedding(10, 64)
+      (5-6): 2 x Embedding(6, 64)
+      (7-8): 2 x Embedding(2, 64)
+    )
+  )
+  (embedding_e): BondEncoder(
+    (bond_embedding_list): ModuleList(
+      (0): Embedding(5, 64)
+      (1): Embedding(6, 64)
+      (2): Embedding(2, 64)
+    )
+  )
+  (layers): ModuleList(
+    (0-9): 10 x GraphiT_GT_LSPE_Layer(in_channels=64, out_channels=64, heads=8, residual=True)
+  )
+  (MLP_layer): MLPReadout(
+    (FC_layers): ModuleList(
+      (0): Linear(in_features=64, out_features=32, bias=True)
+      (1): Linear(in_features=32, out_features=16, bias=True)
+      (2): Linear(in_features=16, out_features=12, bias=True)
+    )
+  )
+  (p_out): Linear(in_features=64, out_features=16, bias=True)
+  (Whp): Linear(in_features=80, out_features=64, bias=True)
+)
+
+Total Parameters: 1051852
+
+
+        FINAL RESULTS
+TEST AUC: 0.7530
+TRAIN AUC: 0.9046
+VAL AUC: 0.8012
+
+
+        Convergence Time (Epochs): 228.0000
+Total Time Taken: 11.5164 hrs
+Average Time Per Epoch: 180.5107 s
+
+
