@@ -1,6 +1,8 @@
 
+# Exploration of Positional Encodings Within the LSPE Framework
 
-# Graph Neural Networks with <br/> Learnable Structural and Positional Representations
+Based on the work of:
+ Graph Neural Networks with <br/> Learnable Structural and Positional Representations
 
 <br>
 
