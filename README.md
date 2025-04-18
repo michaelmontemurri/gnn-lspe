@@ -1,47 +1,68 @@
+# Exploration of Positional Encodings within the LSPE Framework
 
-# Exploration of Positional Encodings Within the LSPE Framework
+This repository builds upon the **[Graph Neural Networks with Learnable Structural and Positional Representations (LSPE)](https://openreview.net/pdf?id=wTTjnvGphYj)** by Dwivedi et al., originally presented at ICLR 2022. The original LSPE framework decouples structural and positional embeddings in GNNs and updates both through learnable modules. While the initial paper explored Laplacian and Random Walk-based positional encodings, many alternative strategies remain underexplored.
 
-Based on the work of:
- Graph Neural Networks with <br/> Learnable Structural and Positional Representations
+> 📎 **This repository includes our extended exploration of initial positional encodings within the LSPE framework, including:**  
+> - Generalized PageRank distance encodings  
+> - Random anchor-based encodings  
+> - Structure-Preserving Embeddings (SPE)  
+> - Centrality-based encodings (degree, closeness, betweenness)
 
-<br>
+Our full report is available [here (PDF)](./docs/Exploration_of_PE_in_LSPE_Framework.pdf).
 
-Source code for the paper "**[Graph Neural Networks with Learnable Structural and Positional Representations](https://openreview.net/pdf?id=wTTjnvGphYj)**" by Vijay Prakash Dwivedi, Anh Tuan Luu, Thomas Laurent, Yoshua Bengio and Xavier Bresson, at the **Tenth International Conference on Learning Representations (ICLR) 2022**.
+---
 
-We propose a novel GNN architecture in which the structural and positional representations are decoupled, and are learnt separately to learn these two essential properties. The architecture, named **MPGNNs-LSPE** (MPGNNs with **L**earnable **S**tructural and **P**ositional **E**ncodings), is generic that it can be applied to any GNN model of interest which fits into the popular 'message-passing framework', including Transformers.
+## 🔬 Research Contributions
 
-![MPGNNs-LSPE](./docs/gnn-lspe.png)  
+We systematically evaluate the effects of these alternative initialization strategies across multiple molecular property prediction benchmarks: **ZINC**, **OGBG-MOLTOX21**, and **OGBG-MOLPCBA**, using four model backbones provided in the original LSPE paper:
 
-<br>
+- GatedGCN
+- PNA
+- SAN (Self-Attention Network)
+- GraphiT (Graph Transformer with structural priors)
 
+Key findings include:
 
-## 1. Repo installation
+- **Closeness centrality** outperforms RWPE on MOLTOX21 in nearly all model variants.
+- **Anchor-based and PageRank-based PEs** show promise but often suffer from overfitting or instability on small molecular graphs.
+- **SPE embeddings** preserve topological structure well but are computationally infeasible at scale.
+- We propose **element-aware sampling** for PageRank anchors to mitigate overfitting.
 
-[Follow these instructions](./docs/01_repo_installation.md) to install the repo and setup the environment.
+---
 
+## 📦 Repository Structure
 
-<br>
+This repo is based on a fork of [vijaydwivedi75/gnn-lspe](https://github.com/vijaydwivedi75/gnn-lspe) and includes:
 
-## 2. Download datasets
+- 🧪 Our added PE modules: `positional_encodings.py`
+- 📄 Reproducibility scripts for new experiments: `scripts/`
+- 📊 Extended results, evaluation logs, and visualization scripts: `logs/`, `plots/`
+- 📁 All original baselines and models preserved
 
-[Proceed as follows](./docs/02_download_datasets.md) to download the benchmark datasets.
+---
 
+## 🚀 Getting Started
 
-<br>
+### 1. Installation
 
-## 3. Reproducibility 
+Follow the environment setup instructions here:  
+[📖 docs/01_repo_installation.md](./docs/01_repo_installation.md)
 
-[Use this page](./docs/03_run_codes.md) to run the codes and reproduce the published results.
+### 2. Dataset Downloads
 
+Download and preprocess benchmark datasets:  
+[📖 docs/02_download_datasets.md](./docs/02_download_datasets.md)
 
-<br>
+### 3. Running Experiments
 
-## 4. Reference 
+Reproduce our extended experiments or baseline results:  
+[📖 docs/03_run_codes.md](./docs/03_run_codes.md)
 
-:page_with_curl: Paper [on arXiv](https://arxiv.org/abs/2110.07875)  
-:movie_camera: Video by [@vijaydwivedi75](https://github.com/vijaydwivedi75) [on YouTube](https://youtu.be/fft2Q0jEWi0)   
-:movie_camera: Video by [@xbresson](https://github.com/xbresson) [on YouTube](https://youtu.be/hADjUl4ymoQ)   
-```
+---
+
+## 📚 References
+
+```bibtex
 @inproceedings{dwivedi2022graph,
   title={Graph Neural Networks with Learnable Structural and Positional Representations},
   author={Vijay Prakash Dwivedi and Anh Tuan Luu and Thomas Laurent and Yoshua Bengio and Xavier Bresson},
@@ -49,7 +70,6 @@ We propose a novel GNN architecture in which the structural and positional repre
   year={2022},
   url={https://openreview.net/forum?id=wTTjnvGphYj}
 }
-```
 
 
 
