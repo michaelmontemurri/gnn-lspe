@@ -1,0 +1,24 @@
+Lmod has detected the following error: The following module(s) are unknown:
+"cuda/12.1"
+
+Please check the spelling or version number. Also try "module spider ..."
+It is also possible your cache file is out-of-date; it may help to try:
+  $ module --ignore_cache load "cuda/12.1"
+
+Also make sure that all modulefiles written in TCL start with the string
+#%Module
+
+
+
+cuda available with GPU: Tesla V100-SXM2-16GB
+[I] Loading dataset OGBG-MOLTOX21...
+[I] Finished loading.
+[I] Data load time: 6.3937s
+Traceback (most recent call last):
+  File "/home/mikemont/final_project/gnn-lspe/main_OGBMOL_graph_classification.py", line 535, in <module>
+    main()
+  File "/home/mikemont/final_project/gnn-lspe/main_OGBMOL_graph_classification.py", line 414, in main
+    dataset.train = dataset.train[:subset_size]
+  File "/home/mikemont/final_project/gnn-lspe/data/ogb_mol.py", line 47, in __getitem__
+    return self.graph_lists[idx], self.graph_labels[idx]
+TypeError: slice indices must be integers or None or have an __index__ method

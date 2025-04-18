@@ -41,7 +41,7 @@
         "use_lapeig_loss": false,
         "alpha_loss": 1e-2,
         "lambda_loss": 1e-2,
-        "pe_init": "rand_walk",
+        "pe_init": "anchor",
         "pos_enc_dim": 16
   }
 }

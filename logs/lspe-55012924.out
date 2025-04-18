@@ -1,0 +1,32 @@
+Lmod has detected the following error: The following module(s) are unknown:
+"cuda/12.1"
+
+Please check the spelling or version number. Also try "module spider ..."
+It is also possible your cache file is out-of-date; it may help to try:
+  $ module --ignore_cache load "cuda/12.1"
+
+Also make sure that all modulefiles written in TCL start with the string
+#%Module
+
+
+
+cuda available with GPU: Tesla V100-SXM2-16GB
+[I] Loading dataset OGBG-MOLTOX21...
+[I] Finished loading.
+[I] Data load time: 6.3402s
+MODEL DETAILS:
+
+MODEL/Total parameters: GatedGCN 1063939
+[!] -SPE: Initializing graph positional encoding using structure-preserving embeddings (SPE).
+Traceback (most recent call last):
+  File "/home/mikemont/final_project/gnn-lspe/main_OGBMOL_graph_classification.py", line 535, in <module>
+    main()
+  File "/home/mikemont/final_project/gnn-lspe/main_OGBMOL_graph_classification.py", line 531, in main
+    train_val_pipeline(MODEL_NAME, dataset, params, net_params, dirs, resume_checkpoint=checkpoint_path)
+  File "/home/mikemont/final_project/gnn-lspe/main_OGBMOL_graph_classification.py", line 125, in train_val_pipeline
+    dataset._init_positional_encodings(net_params['pos_enc_dim'], net_params['pe_init'])  # uses spe_positional_encoding internally
+  File "/home/mikemont/final_project/gnn-lspe/data/ogb_mol.py", line 244, in _init_positional_encodings
+    self.train = [(init_positional_encoding(g, pos_enc_dim, type_init), label) for g, label in self.train]
+  File "/home/mikemont/final_project/gnn-lspe/data/ogb_mol.py", line 244, in <listcomp>
+    self.train = [(init_positional_encoding(g, pos_enc_dim, type_init), label) for g, label in self.train]
+ValueError: too many values to unpack (expected 2)

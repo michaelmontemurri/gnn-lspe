@@ -85,7 +85,7 @@ def view_model_param(MODEL_NAME, net_params):
     return total_param
 
 
-def train_val_pipeline(MODEL_NAME, dataset, params, net_params, dirs):
+def train_val_pipeline(MODEL_NAME, dataset, params, net_params, dirs, resume_checkpoint=None):
     t0 = time.time()
     per_epoch_time = []
         
@@ -169,6 +169,16 @@ def train_val_pipeline(MODEL_NAME, dataset, params, net_params, dirs):
     model = gnn_model(MODEL_NAME, net_params)
     model = model.to(device)
 
+    # resume training from checkpoint
+    start_epoch = 0
+    if resume_checkpoint:
+        print(f"[INFO] Resuming model from checkpoint: {resume_checkpoint}")
+        checkpoint = torch.load(resume_checkpoint, map_location=device)
+        model.load_state_dict(checkpoint['model_state'])
+        optimizer.load_state_dict(checkpoint['optimizer_state'])
+        scheduler.load_state_dict(checkpoint['scheduler_state'])
+        start_epoch = checkpoint['epoch'] + 1
+
     optimizer = optim.Adam(model.parameters(), lr=params['init_lr'], weight_decay=params['weight_decay'])
     scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='min',
                                                      factor=params['lr_reduce_factor'],
@@ -187,7 +197,7 @@ def train_val_pipeline(MODEL_NAME, dataset, params, net_params, dirs):
     
     # At any point you can hit Ctrl + C to break out of training early.
     try:
-        with tqdm(range(params['epochs'])) as t:
+        with tqdm(range(start_epoch, params['epochs'])) as t:
             for epoch in t:
 
                 t.set_description('Epoch %d' % epoch)
@@ -230,7 +240,12 @@ def train_val_pipeline(MODEL_NAME, dataset, params, net_params, dirs):
                 ckpt_dir = os.path.join(root_ckpt_dir, "RUN_")
                 if not os.path.exists(ckpt_dir):
                     os.makedirs(ckpt_dir)
-                torch.save(model.state_dict(), '{}.pkl'.format(ckpt_dir + "/epoch_" + str(epoch)))
+                torch.save({
+                            'epoch': epoch,
+                            'model_state': model.state_dict(),
+                            'optimizer_state': optimizer.state_dict(),
+                            'scheduler_state': scheduler.state_dict(),
+                        }, '{}.pkl'.format(ckpt_dir + "/epoch_" + str(epoch)))
 
                 files = glob.glob(ckpt_dir + '/*.pkl')
                 for file in files:
@@ -372,6 +387,9 @@ def main():
     parser.add_argument('--alpha_loss', help="Please give a value for alpha_loss")
     parser.add_argument('--lambda_loss', help="Please give a value for lambda_loss")
     parser.add_argument('--pe_init', help="Please give a value for pe_init")
+    parser.add_argument('--checkpoint_path', help="Optional: path to a model checkpoint to resume training")
+    parser.add_argument('--subset_size', type=int, help="Please give a value for subset_size")
+
     args = parser.parse_args()
     with open(args.config) as f:
         config = json.load(f)
@@ -389,7 +407,22 @@ def main():
         DATASET_NAME = args.dataset
     else:
         DATASET_NAME = config['dataset']
+
     dataset = LoadData(DATASET_NAME)
+    if args.subset_size is not None:
+        subset_size = int(args.subset_size)
+        
+        # Calculate how many graphs to keep in each split
+        train_ratio, val_ratio, test_ratio = 0.6, 0.2, 0.2
+        train_cut = int(subset_size * train_ratio)
+        val_cut = int(subset_size * val_ratio)
+        test_cut = subset_size - train_cut - val_cut  # ensure total == subset_size
+
+        # Subset BEFORE positional encodings are initialized
+        dataset.train = dataset.train[:train_cut]
+        dataset.val = dataset.val[:val_cut]
+        dataset.test = dataset.test[:test_cut]
+        
     if args.out_dir is not None:
         out_dir = args.out_dir
     else:
@@ -473,7 +506,9 @@ def main():
         net_params['lambda_loss'] = float(args.lambda_loss)
     if args.pe_init is not None:
         net_params['pe_init'] = args.pe_init    
-    
+
+    checkpoint_path = args.checkpoint_path if args.checkpoint_path else None
+
     
     # OGBMOL*
     num_classes = dataset.dataset.num_tasks  # provided by OGB dataset class
@@ -501,9 +536,8 @@ def main():
         os.makedirs(out_dir + 'configs')
 
     net_params['total_param'] = view_model_param(MODEL_NAME, net_params)
-    train_val_pipeline(MODEL_NAME, dataset, params, net_params, dirs)
+    train_val_pipeline(MODEL_NAME, dataset, params, net_params, dirs, resume_checkpoint=checkpoint_path)
 
-    
     
 if __name__ == "__main__":
     main()

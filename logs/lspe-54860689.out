@@ -28,3 +28,16 @@ Also make sure that all modulefiles written in TCL start with the string
   warnings.warn(f"[WARN] SPE failed on graph with {n_nodes} nodes. Using degree-based fallback. Error: {e}")
 /home/mikemont/final_project/gnn-lspe/data/positional_encodings.py:263: UserWarning: [WARN] SPE failed on graph with 6 nodes. Using degree-based fallback. Error: 
   warnings.warn(f"[WARN] SPE failed on graph with {n_nodes} nodes. Using degree-based fallback. Error: {e}")
+/home/mikemont/final_project/gnn-lspe/data/positional_encodings.py:263: UserWarning: [WARN] SPE failed on graph with 31 nodes. Using degree-based fallback. Error: 
+  warnings.warn(f"[WARN] SPE failed on graph with {n_nodes} nodes. Using degree-based fallback. Error: {e}")
+/home/mikemont/final_project/gnn-lspe/data/positional_encodings.py:263: UserWarning: [WARN] SPE failed on graph with 76 nodes. Using degree-based fallback. Error: 
+  warnings.warn(f"[WARN] SPE failed on graph with {n_nodes} nodes. Using degree-based fallback. Error: {e}")
+/home/mikemont/final_project/gnn-lspe/data/positional_encodings.py:263: UserWarning: [WARN] SPE failed on graph with 25 nodes. Using degree-based fallback. Error: 
+  warnings.warn(f"[WARN] SPE failed on graph with {n_nodes} nodes. Using degree-based fallback. Error: {e}")
+/home/mikemont/final_project/gnn-lspe/data/positional_encodings.py:263: UserWarning: [WARN] SPE failed on graph with 10 nodes. Using degree-based fallback. Error: 
+  warnings.warn(f"[WARN] SPE failed on graph with {n_nodes} nodes. Using degree-based fallback. Error: {e}")
+/home/mikemont/final_project/gnn-lspe/data/positional_encodings.py:263: UserWarning: [WARN] SPE failed on graph with 30 nodes. Using degree-based fallback. Error: 
+  warnings.warn(f"[WARN] SPE failed on graph with {n_nodes} nodes. Using degree-based fallback. Error: {e}")
+/home/mikemont/final_project/gnn-lspe/data/positional_encodings.py:263: UserWarning: [WARN] SPE failed on graph with 15 nodes. Using degree-based fallback. Error: 
+  warnings.warn(f"[WARN] SPE failed on graph with {n_nodes} nodes. Using degree-based fallback. Error: {e}")
+slurmstepd: error: *** JOB 54860689 ON bg12001 CANCELLED AT 2025-04-01T00:22:39 DUE TO TIME LIMIT ***

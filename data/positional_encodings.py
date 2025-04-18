@@ -181,7 +181,7 @@ def _compute_shortest_path_dict(G, cutoff=None):
     """
     return dict(nx.all_pairs_shortest_path_length(G, cutoff=cutoff))
 
-def _anchor_distance_pe(G, c=2, q=3, seed=None, transform="inverse"):
+def _anchor_distance_pe(G, c=2, q=3, seed=None, transform="inverse", bourgain=True):
     """
     Generate anchor distance-based positional encodings.
     Returns a numpy array of shape [num_nodes, num_anchors].
@@ -189,7 +189,11 @@ def _anchor_distance_pe(G, c=2, q=3, seed=None, transform="inverse"):
     G = nx.convert_node_labels_to_integers(G)
     n = G.number_of_nodes()
     node_list = list(G.nodes())
-    anchor_sets = _sample_bourgain_anchor_sets(G, c=c, seed=seed)
+    if bourgain:
+        anchor_sets = _sample_bourgain_anchor_sets(G, c=c, seed=seed)
+    else:
+        anchor_sets = _fixed_degree_anchor_sets(G, num_anchors=int(np.log(n)))
+
     sp_dict = _compute_shortest_path_dict(G, cutoff=q)
     
     def distance_transform(d):
@@ -214,6 +218,23 @@ def _anchor_distance_pe(G, c=2, q=3, seed=None, transform="inverse"):
             pe_row.append(distance_transform(min_d))
         pe_matrix.append(pe_row)
     return np.array(pe_matrix)
+
+def _fixed_degree_anchor_sets(G, num_anchors=10):
+    """
+    Select anchor sets consisting of high-degree and low-degree nodes.
+    Half will be from the highest degrees, half from the lowest.
+    """
+    degrees = dict(G.degree())
+    sorted_nodes = sorted(degrees.items(), key=lambda x: x[1])
+
+    num_each = num_anchors // 2
+
+    low_degree_nodes = [node for node, _ in sorted_nodes[:num_each]]
+    high_degree_nodes = [node for node, _ in sorted_nodes[-num_each:]]
+
+    anchor_sets = [{n} for n in low_degree_nodes + high_degree_nodes]
+    return anchor_sets
+
 
 def lap_positional_encoding(g, pos_enc_dim):
     """
@@ -284,6 +305,7 @@ def anchor_positional_encoding(g, pos_enc_dim, c=10, q=5, seed=None, transform="
     """
     G_nx = g.to_networkx().to_undirected()
     pe_matrix = _anchor_distance_pe(G_nx, c=c, q=q, seed=seed, transform=transform)
+
     n, d = pe_matrix.shape
     if d >= pos_enc_dim:
         pe_matrix = pe_matrix[:, :pos_enc_dim]

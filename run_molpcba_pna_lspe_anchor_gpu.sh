@@ -4,7 +4,7 @@
 #SBATCH --cpus-per-task=8
 #SBATCH --mem=64G
 #SBATCH --time=16:00:00              # max runtime (hh:mm:ss)
-#SBATCH --job-name=lspe-run
+#SBATCH --job-name=pna_anchor_molpcba
 #SBATCH --output=logs/lspe-%j.out    # output log (%j = job ID)
 
 # Load required modules

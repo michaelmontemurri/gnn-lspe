@@ -19,7 +19,9 @@
         "min_lr": 1e-4,
         "weight_decay": 0.0,
         "print_epoch_interval": 1,
-        "max_time": 96
+        "max_time": 96,
+        "resume_checkpoint": true,
+        "checkpoint_path": "/home/mikemont/final_project/gnn-lspe/out/GatedGCN_MOLPCBA_LSPE_anchor_noLapEigLoss/checkpoints/GatedGCN_OGBG-MOLPCBA_GPU0_17h48m16s_on_Mar_30_2025/RUN_/epoch_81.pkl"
     },
     
     "net_params": {
