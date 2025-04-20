@@ -14,7 +14,7 @@ Our full report is available [here (PDF)](./docs/Exploration_of_PE_in_LSPE_Frame
 
 ## 🔬 Research Contributions
 
-We systematically evaluate the effects of these alternative initialization strategies across multiple molecular property prediction benchmarks: **ZINC**, **OGBG-MOLTOX21**, and **OGBG-MOLPCBA**, using four model backbones provided in the original LSPE paper:
+We evaluate the effects of these alternative initialization strategies across multiple molecular property prediction benchmarks: **ZINC**, **OGBG-MOLTOX21**, and **OGBG-MOLPCBA**, using four models provided in the original LSPE paper:
 
 - GatedGCN
 - PNA
@@ -24,7 +24,7 @@ We systematically evaluate the effects of these alternative initialization strat
 Key findings include:
 
 - **Closeness centrality** outperforms RWPE on MOLTOX21 in nearly all model variants.
-- **Anchor-based and PageRank-based PEs** show promise but often suffer from overfitting or instability on small molecular graphs.
+- **Anchor-based and PageRank-based PEs** suffer from overfitting or instability on small molecular graphs.
 - **SPE embeddings** preserve topological structure well but are computationally infeasible at scale.
 - We propose **element-aware sampling** for PageRank anchors to mitigate overfitting.
 
